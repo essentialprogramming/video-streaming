@@ -109,6 +109,8 @@ public final class UndertowServer {
                 .addHttpListener(port, host)
                 .setHandler(shutdown)
                 .setServerOption(UndertowOptions.ENABLE_HTTP2, true)
+                .setSocketOption(UndertowOptions.NO_REQUEST_TIMEOUT, 5000)
+                .setServerOption(UndertowOptions.NO_REQUEST_TIMEOUT, 5000)
                 .build();
 
         server.start();

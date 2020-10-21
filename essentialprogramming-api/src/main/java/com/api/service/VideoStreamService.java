@@ -113,6 +113,14 @@ public class VideoStreamService {
         return new File(url.getFile()).getAbsolutePath();
     }
 
+    @SneakyThrows
+    private URL getFile(String fileName) {
+
+        FileInputResource fileInputResource = new FileInputResource(VIDEO + "/" + fileName);
+        URL url = fileInputResource.getFile();
+        return url;
+    }
+
     /**
      * Content length.
      *
@@ -121,9 +129,18 @@ public class VideoStreamService {
      */
     public Long getFileSize(String fileName) {
         return Optional.ofNullable(fileName)
-                .map(file -> Paths.get(getFilePath(fileName)))
-                .map(this::sizeFromFile)
+                .map(file -> getFile(fileName))
+                .map(this::getFileSize)
                 .orElse(0L);
+    }
+
+    @SneakyThrows
+    public long getFileSize(URL url) {
+        try (InputStream stream = url.openStream()) {
+            return stream.available();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
