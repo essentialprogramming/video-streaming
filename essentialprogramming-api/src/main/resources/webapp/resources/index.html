@@ -1,7 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Local MPEG-Dash Player using Dash.js</title>
+    <style>
+        video {
+            width: 900px;
+            height: 500px;
+        }
+    </style>
+
+    <script src="js/header.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="assets/dash.all.min.js"></script>
+
+</head>
+
 <script>
 
     async function start() {
-        window.location = `/api/video/stream/mp4/Tom&Jerry`;
+        //window.location = `/api/video/stream/mp4/Tom&Jerry`;
     }
 
     start()
@@ -9,3 +27,16 @@
         .catch(error => console.log("Application not started, due to " + error))
 
 </script>
+
+
+<video id="videoPlayer" data-dashjs-player controls src="manifest.mpd">
+</video>
+
+<script>
+    docReady(async function () {
+
+
+    });
+
+</script>
+

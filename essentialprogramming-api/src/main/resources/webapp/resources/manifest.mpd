@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <MPD profiles="urn:mpeg:dash:profile:isoff-on-demand:2011" type="static" mediaPresentationDuration="P0Y0M0DT0H3M3S" minBufferTime="P0Y0M0DT0H0M4S" xmlns="urn:mpeg:dash:schema:mpd:2011" xmlns:cenc="urn:mpeg:cenc:2013" xmlns:ns3="http://www.w3.org/1999/xlink">
-    <ProgramInformation moreInformationURL="www.castLabs.com"/>
+    <ProgramInformation moreInformationURL="www.essentialprogramming.com"/>
     <Period id="period-0" start="P0Y0M0DT0H0M0S" duration="P0Y0M0DT0H3M3S">
         <AdaptationSet minBandwidth="230900" maxBandwidth="1385000" minWidth="160" maxWidth="1280" minHeight="90" maxHeight="720" profiles="urn:mpeg:dash:profile:isoff-on-demand:2011" sar="1:1" frameRate="24000/1001" mimeType="video/mp4">
             <Representation id="input_video_160x90_250k" bandwidth="230900" width="160" height="90" codecs="avc1.64000d">
-                <BaseURL>input_video_160x90_250k.mp4</BaseURL>
+                <BaseURL>/api/video/stream/mp4/input_video_160x90_250k</BaseURL>
                 <SegmentBase timescale="24000" indexRange="755-1182" indexRangeExact="true">
                     <Initialization range="0-754"/>
                 </SegmentBase>
@@ -22,13 +22,13 @@
                 </SegmentBase>
             </Representation>
             <Representation id="input_video_640x360_1000k" bandwidth="921400" width="640" height="360" codecs="avc1.64001e">
-                <BaseURL>input_video_640x360_1000k.mp4</BaseURL>
+                <BaseURL>/api/video/stream/mp4/input_video_640x360_1000k</BaseURL>
                 <SegmentBase timescale="24000" indexRange="756-1171" indexRangeExact="true">
                     <Initialization range="0-755"/>
                 </SegmentBase>
             </Representation>
             <Representation id="input_video_1280x720_1500k" bandwidth="1385000" width="1280" height="720" codecs="avc1.64001f">
-                <BaseURL>input_video_1280x720_1500k.mp4</BaseURL>
+                <BaseURL>/api/video/stream/mp4/input_video_1280x720_1500k</BaseURL>
                 <SegmentBase timescale="24000" indexRange="755-1170" indexRangeExact="true">
                     <Initialization range="0-754"/>
                 </SegmentBase>
