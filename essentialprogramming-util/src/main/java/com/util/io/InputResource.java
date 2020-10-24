@@ -32,7 +32,14 @@ public interface InputResource {
 			}
 			return url;
 		}
+
 		try {
+			ClassLoader loader = ResourceUtils.getClassLoader();
+			URL url = (loader != null ? loader.getResource(resourceLocation) : ClassLoader.getSystemResource(resourceLocation));
+			if (url != null) {
+				return url;
+			}
+
 			// try URL
 			return new URL(resourceLocation);
 		} catch (MalformedURLException ex) {

@@ -1,8 +1,5 @@
 package com.util.io;
 
-/**
- * @author Ovidiu Lapusan
- */
 public enum InputResourcePrefix {
 
 	/** Pseudo URL prefix for loading from the class path: "classpath:" */

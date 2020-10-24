@@ -8,7 +8,7 @@ import java.net.URL;
 
 
 public class FileInputResource implements InputResource {
-
+    private static final int BYTE_RANGE = 1024;
     private final URL file;
 
     public FileInputResource(String fileName) throws IOException {
@@ -22,16 +22,18 @@ public class FileInputResource implements InputResource {
     }
 
     public byte[] getBytes() throws IOException {
-        final InputStream inputStream = getInputStream();
-        final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        int nRead;
-        byte[] data = new byte[1024];
-        while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-            buffer.write(data, 0, nRead);
+        try (InputStream inputStream = getInputStream();
+             ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
+            int nRead;
+            byte[] data = new byte[BYTE_RANGE];
+            while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, nRead);
+            }
+
+            buffer.flush();
+            return buffer.toByteArray();
         }
 
-        buffer.flush();
-        return buffer.toByteArray();
     }
 
     public URL getFile() {

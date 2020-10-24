@@ -7,14 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Optional;
 
 import static com.api.constants.ApplicationConstants.*;
@@ -41,19 +39,18 @@ public class VideoStreamService {
         try {
             fileSize = getFileSize(fullFileName);
             if (range == null) {
-                return Response.ok(readByteRange(fullFileName, rangeStart, fileSize - 1))
+                return Response.ok(new byte[1])
                         .status(Response.Status.OK)
                         .header(CONTENT_TYPE, VIDEO_CONTENT + fileType)
-                        .header(CONTENT_LENGTH, String.valueOf(fileSize))
                         .build();
-                         // Read the object and convert it as bytes
+                // Read the object and convert it as bytes
             }
             String[] ranges = range.split("-");
             rangeStart = Long.parseLong(ranges[0].substring(6));
             if (ranges.length > 1) {
                 rangeEnd = Long.parseLong(ranges[1]);
             } else {
-                rangeEnd = fileSize - 1;
+                rangeEnd = rangeStart + SEGMENT;
             }
             if (fileSize < rangeEnd) {
                 rangeEnd = fileSize - 1;
@@ -85,19 +82,12 @@ public class VideoStreamService {
      * @throws IOException exception.
      */
     public byte[] readByteRange(String fileName, long start, long end) throws IOException {
-        FileInputResource fileInputResource = new FileInputResource(VIDEO + "/" + fileName);
-        try (InputStream inputStream = (fileInputResource.getInputStream());
-             ByteArrayOutputStream bufferedOutputStream = new ByteArrayOutputStream()) {
-            byte[] data = new byte[BYTE_RANGE];
-            int nRead;
-            while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-                bufferedOutputStream.write(data, 0, nRead);
-            }
-            bufferedOutputStream.flush();
-            byte[] result = new byte[(int) (end - start) + 1];
-            System.arraycopy(bufferedOutputStream.toByteArray(), (int) start, result, 0, result.length);
-            return result;
-        }
+        FileInputResource fileInputResource = new FileInputResource(PATH + "/" + fileName);
+
+        byte[] result = new byte[(int) (end - start) + 1];
+        System.arraycopy(fileInputResource.getBytes(), (int) start, result, 0, result.length);
+        return result;
+
     }
 
     /**
@@ -108,7 +98,7 @@ public class VideoStreamService {
     @SneakyThrows
     private String getFilePath(String fileName) {
 
-        FileInputResource fileInputResource = new FileInputResource(VIDEO + "/" + fileName);
+        FileInputResource fileInputResource = new FileInputResource(PATH + "/" + fileName);
         URL url = fileInputResource.getFile();
         return new File(url.getFile()).getAbsolutePath();
     }
@@ -116,7 +106,7 @@ public class VideoStreamService {
     @SneakyThrows
     private URL getFile(String fileName) {
 
-        FileInputResource fileInputResource = new FileInputResource(VIDEO + "/" + fileName);
+        FileInputResource fileInputResource = new FileInputResource(PATH + "/" + fileName);
         URL url = fileInputResource.getFile();
         return url;
     }
