@@ -1,0 +1,11 @@
+<script>
+
+    async function start() {
+        window.location = `/api/video/stream/mp4/Tom&Jerry`;
+    }
+
+    start()
+        .then(() => console.log("Application started"))
+        .catch(error => console.log("Application not started, due to " + error))
+
+</script>

@@ -20,6 +20,9 @@ import javax.ws.rs.core.Response;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutorService;
 
+import static com.api.constants.ApplicationConstants.CONTENT_TYPE;
+import static com.api.constants.ApplicationConstants.VIDEO_CONTENT;
+
 @Path("/video/")
 public class VideoStreamController {
 
@@ -53,7 +56,13 @@ public class VideoStreamController {
 
     }
 
-    private Response stream(String fileName, String fileType, String httpRangeList) {
-        return videoStreamService.prepareContent(fileType, fileName, httpRangeList);
+    private Response stream(String fileType, String fileName, String httpRangeList) {
+        if (httpRangeList == null) {
+            return Response.ok(new byte[1])
+                    .status(Response.Status.OK)
+                    .header(CONTENT_TYPE, VIDEO_CONTENT + fileType)
+                    .build();
+        }
+        return videoStreamService.prepareContent(fileName, fileType, httpRangeList);
     }
 }

@@ -37,14 +37,7 @@ public class VideoStreamService {
         Long fileSize;
         String fullFileName = fileName + "." + fileType;
         try {
-            fileSize = getFileSize(fullFileName);
-            if (range == null) {
-                return Response.ok(new byte[1])
-                        .status(Response.Status.OK)
-                        .header(CONTENT_TYPE, VIDEO_CONTENT + fileType)
-                        .build();
-                // Read the object and convert it as bytes
-            }
+
             String[] ranges = range.split("-");
             rangeStart = Long.parseLong(ranges[0].substring(6));
             if (ranges.length > 1) {
@@ -52,6 +45,7 @@ public class VideoStreamService {
             } else {
                 rangeEnd = rangeStart + SEGMENT;
             }
+            fileSize = getFileSize(fullFileName);
             if (fileSize < rangeEnd) {
                 rangeEnd = fileSize - 1;
             }
@@ -73,7 +67,7 @@ public class VideoStreamService {
     }
 
     /**
-     * ready file byte by byte.
+     * Read file.
      *
      * @param fileName String.
      * @param start    long.
