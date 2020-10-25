@@ -1,12 +1,13 @@
 package com.api.service;
 
+import com.exception.ErrorCode;
+import com.util.exceptions.ServiceException;
 import com.util.io.FileInputResource;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,43 +27,17 @@ public class VideoStreamService {
      * Prepare the content.
      *
      * @param fileName String.
-     * @param fileType String.
-     * @param range    String.
+     * @param rangeStart Long.
+     * @param rangeEnd    Long.
      * @return ResponseEntity.
      */
-    public Response prepareContent(String fileName, String fileType, String range) {
-        long rangeStart = 0;
-        long rangeEnd;
-        byte[] data;
-        Long fileSize;
-        String fullFileName = fileName + "." + fileType;
-        try {
-
-            String[] ranges = range.split("-");
-            rangeStart = Long.parseLong(ranges[0].substring(6));
-            if (ranges.length > 1) {
-                rangeEnd = Long.parseLong(ranges[1]);
-            } else {
-                rangeEnd = rangeStart + SEGMENT;
-            }
-            fileSize = getFileSize(fullFileName);
-            if (fileSize < rangeEnd) {
-                rangeEnd = fileSize - 1;
-            }
-            data = readByteRange(fullFileName, rangeStart, rangeEnd);
+    public byte[] prepareContent(String fileName, long rangeStart, long rangeEnd) {
+      try{
+            return readByteRange(fileName, rangeStart, rangeEnd);
         } catch (IOException e) {
             logger.error("Exception while reading the file {}", e.getMessage());
-            return Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            throw new ServiceException(ErrorCode.ERROR_READING_FILE);
         }
-        String contentLength = String.valueOf((rangeEnd - rangeStart) + 1);
-        return Response.ok(data)
-                .status(Response.Status.PARTIAL_CONTENT)
-                .header(CONTENT_TYPE, VIDEO_CONTENT + fileType)
-                .header(ACCEPT_RANGES, BYTES)
-                .header(CONTENT_LENGTH, contentLength)
-                .header(CONTENT_RANGE, BYTES + " " + rangeStart + "-" + rangeEnd + "/" + fileSize)
-                .build();
-
 
     }
 
@@ -78,9 +53,10 @@ public class VideoStreamService {
     public byte[] readByteRange(String fileName, long start, long end) throws IOException {
         FileInputResource fileInputResource = new FileInputResource(PATH + "/" + fileName);
 
-        byte[] result = new byte[(int) (end - start) + 1];
-        System.arraycopy(fileInputResource.getBytes(), (int) start, result, 0, result.length);
-        return result;
+        //byte[] result = new byte[(int) (end - start) + 1];
+        //System.arraycopy(fileInputResource.getBytes(), (int) start, result, 0, result.length);
+
+        return fileInputResource.getBytes(start, (int) (end - start) + 1);
 
     }
 

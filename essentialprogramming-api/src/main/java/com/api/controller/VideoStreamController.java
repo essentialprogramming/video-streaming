@@ -1,6 +1,7 @@
 package com.api.controller;
 
 import com.api.config.Anonymous;
+import com.api.controller.handler.StreamRequestValidationHandler;
 import com.api.service.VideoStreamService;
 import com.config.ExecutorsProvider;
 import com.exception.ExceptionHandler;
@@ -20,22 +21,22 @@ import javax.ws.rs.core.Response;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutorService;
 
-import static com.api.constants.ApplicationConstants.CONTENT_TYPE;
-import static com.api.constants.ApplicationConstants.VIDEO_CONTENT;
+import static com.api.constants.ApplicationConstants.*;
 
 @Path("/video/")
 public class VideoStreamController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(VideoStreamController.class);
-
+    private static final Logger logger = LoggerFactory.getLogger(VideoStreamController.class);
     private final VideoStreamService videoStreamService;
+    private final StreamRequestValidationHandler streamRequestValidationHandler;
 
     @Context
     private Language language;
 
     @Autowired
-    public VideoStreamController(VideoStreamService videoStreamService) {
+    public VideoStreamController(VideoStreamService videoStreamService, StreamRequestValidationHandler streamRequestValidationHandler) {
         this.videoStreamService = videoStreamService;
+        this.streamRequestValidationHandler = streamRequestValidationHandler;
     }
 
     @GET
@@ -45,24 +46,55 @@ public class VideoStreamController {
     @Anonymous
     public void streamVideo(@PathParam("fileType") String fileType,
                             @PathParam("fileName") String fileName,
-                            @HeaderParam(value = "Range") String httpRangeList,
+                            @HeaderParam(value = "Range") String range,
                             @Suspended AsyncResponse asyncResponse) {
 
+        logger.info(range);
+
         ExecutorService executorService = ExecutorsProvider.getExecutorService();
-        System.out.println(httpRangeList);
-        Computation.computeAsync(() -> stream(fileType, fileName, httpRangeList), executorService)
+        Computation.computeAsync(() -> stream(fileType, fileName, range), executorService)
                 .thenApplyAsync(asyncResponse::resume, executorService)
                 .exceptionally(error -> asyncResponse.resume(ExceptionHandler.handleException((CompletionException) error)));
 
     }
 
-    private Response stream(String fileType, String fileName, String httpRangeList) {
-        if (httpRangeList == null) {
-            return Response.ok(new byte[1])
+    private Response stream(String fileType, String fileName, String range) {
+        if (range == null) {
+            return Response.ok(SHORT_BYTE)
                     .status(Response.Status.OK)
                     .header(CONTENT_TYPE, VIDEO_CONTENT + fileType)
                     .build();
         }
-        return videoStreamService.prepareContent(fileName, fileType, httpRangeList);
+
+        streamRequestValidationHandler.handle(range, fileName + "." + fileType);
+
+        long rangeStart = 0;
+        long rangeEnd;
+
+        final String fullFileName = fileName + "." + fileType;
+
+
+        String[] ranges = range.split("-");
+        rangeStart = Long.parseLong(ranges[0].substring(6));
+        if (ranges.length > 1) {
+            rangeEnd = Long.parseLong(ranges[1]);
+        } else {
+            rangeEnd = rangeStart + SEGMENT;
+        }
+        final Long fileSize = videoStreamService.getFileSize(fullFileName);
+        if (fileSize < rangeEnd) {
+            rangeEnd = fileSize - 1;
+        }
+
+        final byte[] data = videoStreamService.prepareContent(fullFileName, rangeStart, rangeEnd);
+        final String contentLength = String.valueOf((rangeEnd - rangeStart) + 1);
+        return Response.ok(data)
+                .status(Response.Status.PARTIAL_CONTENT) // 206.
+                .header(CONTENT_TYPE, VIDEO_CONTENT + fileType)
+                .header(ACCEPT_RANGES, BYTES)
+                .header(CONTENT_LENGTH, contentLength)
+                .header(CONTENT_RANGE, BYTES + " " + rangeStart + "-" + rangeEnd + "/" + fileSize)
+                .build();
+
     }
 }

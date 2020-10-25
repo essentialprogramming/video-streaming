@@ -1,7 +1,7 @@
 let apiEndpoints = [
     {
         url: '../api/openapi',
-        name: 'EssentialProgramming API'
+        name: 'Video Streaming API'
     },
     {
         url: '../api/auth/openapi',

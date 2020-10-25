@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebRTC</title>
+    <style>
+        video {
+            width: 900px;
+            height: 500px;
+        }
+    </style>
+
+    <script src="js/header.js"></script>
+    <script src="js/utils.js"></script>
+
+
+</head>
+
+<script>
+
+    async function start() {
+    }
+
+    start()
+        .then(() => console.log("Application started"))
+        .catch(error => console.log("Application not started, due to " + error))
+
+    async function startCamera() {
+        await Utils.streamCamera();
+    }
+</script>
+
+
+<script>
+    docReady(async function () {
+
+
+    });
+
+</script>
+<body>
+
+<button onClick="startCamera()">Start Camera</button>
+<video autoplay id="video"></video>
+
+</body>
+
+</html>

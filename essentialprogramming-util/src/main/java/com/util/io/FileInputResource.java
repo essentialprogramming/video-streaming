@@ -36,6 +36,29 @@ public class FileInputResource implements InputResource {
 
     }
 
+    public byte[] getBytes(long start, int length) throws IOException {
+        try (InputStream inputStream = getInputStream();
+             ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
+
+            inputStream.skip(start);
+            long toRead = length;
+            int nRead;
+            byte[] data = new byte[BYTE_RANGE];
+            while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+                if ((toRead -= nRead) > 0) {
+                    buffer.write(data, 0, nRead);
+                    buffer.flush();
+                } else {
+                    buffer.write(data, 0, (int) toRead + nRead);
+                    buffer.flush();
+                    break;
+                }
+            }
+            return buffer.toByteArray();
+        }
+
+    }
+
     public URL getFile() {
         return file;
     }

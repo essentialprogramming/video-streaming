@@ -1,7 +1,7 @@
 package com.exception;
 
-import com.util.enums.HTTPCustomStatus;
-import com.util.exceptions.ApiException;
+import com.util.exceptions.ServiceException;
+import com.util.exceptions.ValidationException;
 import com.web.json.JsonResponse;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -17,27 +17,21 @@ public class ExceptionHandler {
         Response getValue(T exception);
     }
 
-    private final static Strategy<ApiException> apiExceptionStrategy = (exception) -> {
-        JsonResponse jsonResponse;
-        jsonResponse = new JsonResponse()
-                .with("message", exception.getMessage())
-                .with("code", exception.getHttpCode())
-                .done();
+    private final static Strategy<ValidationException> validationExceptionStrategy = (exception) -> {
         return Response
-                .status(exception.getHttpCode().value())
-                .entity(jsonResponse)
+                .status(exception.getHttpCode())
+                .header("Content-Range", "bytes */" + exception.getMessage()) // Required in 416.
                 .build();
     };
 
-    private final static Strategy<HttpClientErrorException> httpClientErrorException = (exception) -> {
+    private final static Strategy<ServiceException> serviceExceptionStrategy = (exception) -> {
         JsonResponse jsonResponse;
         jsonResponse = new JsonResponse()
-                .with("message", exception.getMessage())
-                .with("code", exception.getStatusCode().value())
+                .with("Message", exception.getMessage())
+                .with("Code", exception.getFailureCode())
                 .done();
-
         return Response
-                .status(exception.getStatusCode().value())
+                .status(Response.Status.NO_CONTENT)
                 .entity(jsonResponse)
                 .build();
     };
@@ -46,19 +40,20 @@ public class ExceptionHandler {
         JsonResponse jsonResponse;
         jsonResponse = new JsonResponse()
                 .with("message", "INTERNAL_SERVER_ERROR")
-                .with("code", HTTPCustomStatus.BUSINESS_EXCEPTION.value())
+                .with("code", Response.Status.INTERNAL_SERVER_ERROR)
                 .with("Exception", exception)
                 .done();
 
         return Response
                 .serverError()
-                .entity(jsonResponse).build();
+                .entity(jsonResponse)
+                .build();
     };
 
     private final static Map<Class, Strategy> strategiesMap = new HashMap<Class, Strategy>() {
         {
-            put(ApiException.class, apiExceptionStrategy);
-            put(HttpClientErrorException.class, httpClientErrorException);
+            put(ValidationException.class, validationExceptionStrategy);
+            put(HttpClientErrorException.class, serviceExceptionStrategy);
         }
     };
 

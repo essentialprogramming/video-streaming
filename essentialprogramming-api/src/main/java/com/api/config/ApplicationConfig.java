@@ -31,6 +31,7 @@ public class ApplicationConfig extends ResourceConfig {
         register(CorsFilter.class);
         register(JacksonJaxbJsonProvider.class);
         register(VideoStreamController.class);
+        register(HealthController.class);
         register(MultiPartFeature.class);
 
 

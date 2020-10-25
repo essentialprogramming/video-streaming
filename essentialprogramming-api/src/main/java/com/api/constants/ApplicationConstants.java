@@ -10,6 +10,7 @@ public class ApplicationConstants {
     public static final String ACCEPT_RANGES = "Accept-Ranges";
     public static final String BYTES = "bytes";
     public static final int SEGMENT = 1000000;
+    public static final byte[] SHORT_BYTE = new byte[1];
 
     private ApplicationConstants() {
     }
