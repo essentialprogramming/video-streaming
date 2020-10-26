@@ -2,6 +2,7 @@ package com.api.controller;
 
 import com.api.config.Anonymous;
 import com.api.controller.handler.StreamRequestValidationHandler;
+import com.api.model.Range;
 import com.api.service.VideoStreamService;
 import com.config.ExecutorsProvider;
 import com.exception.ExceptionHandler;
@@ -58,42 +59,29 @@ public class VideoStreamController {
 
     }
 
-    private Response stream(String fileType, String fileName, String range) {
-        if (range == null) {
+    private Response stream(String fileType, String fileName, String byteRange) {
+        if (byteRange == null) {
             return Response.ok(SHORT_BYTE)
                     .status(Response.Status.OK)
                     .header(CONTENT_TYPE, VIDEO_CONTENT + fileType)
                     .build();
         }
-
-        streamRequestValidationHandler.handle(range, fileName + "." + fileType);
-
-        long rangeStart = 0;
-        long rangeEnd;
-
         final String fullFileName = fileName + "." + fileType;
 
+        //range validation
+        streamRequestValidationHandler.handle(byteRange, fullFileName);
 
-        String[] ranges = range.split("-");
-        rangeStart = Long.parseLong(ranges[0].substring(6));
-        if (ranges.length > 1) {
-            rangeEnd = Long.parseLong(ranges[1]);
-        } else {
-            rangeEnd = rangeStart + SEGMENT;
-        }
-        final Long fileSize = videoStreamService.getFileSize(fullFileName);
-        if (fileSize < rangeEnd) {
-            rangeEnd = fileSize - 1;
-        }
+        final Range range = Range.of(byteRange, videoStreamService.getFileSize(fullFileName));
 
-        final byte[] data = videoStreamService.prepareContent(fullFileName, rangeStart, rangeEnd);
-        final String contentLength = String.valueOf((rangeEnd - rangeStart) + 1);
+
+        final byte[] data = videoStreamService.prepareContent(fullFileName, range.start, range.end);
+        final String contentLength = String.valueOf(range.length);
         return Response.ok(data)
                 .status(Response.Status.PARTIAL_CONTENT) // 206.
                 .header(CONTENT_TYPE, VIDEO_CONTENT + fileType)
                 .header(ACCEPT_RANGES, BYTES)
                 .header(CONTENT_LENGTH, contentLength)
-                .header(CONTENT_RANGE, BYTES + " " + rangeStart + "-" + rangeEnd + "/" + fileSize)
+                .header(CONTENT_RANGE, BYTES + " " + range.start + "-" + range.end + "/" + range.total)
                 .build();
 
     }

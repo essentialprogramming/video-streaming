@@ -26,13 +26,13 @@ public class VideoStreamService {
     /**
      * Prepare the content.
      *
-     * @param fileName String.
+     * @param fileName   String.
      * @param rangeStart Long.
-     * @param rangeEnd    Long.
+     * @param rangeEnd   Long.
      * @return ResponseEntity.
      */
     public byte[] prepareContent(String fileName, long rangeStart, long rangeEnd) {
-      try{
+        try {
             return readByteRange(fileName, rangeStart, rangeEnd);
         } catch (IOException e) {
             logger.error("Exception while reading the file {}", e.getMessage());
@@ -51,11 +51,11 @@ public class VideoStreamService {
      * @throws IOException exception.
      */
     public byte[] readByteRange(String fileName, long start, long end) throws IOException {
-        FileInputResource fileInputResource = new FileInputResource(PATH + "/" + fileName);
-
         //byte[] result = new byte[(int) (end - start) + 1];
         //System.arraycopy(fileInputResource.getBytes(), (int) start, result, 0, result.length);
+        //return result;
 
+        FileInputResource fileInputResource = new FileInputResource(PATH + "/" + fileName);
         return fileInputResource.getBytes(start, (int) (end - start) + 1);
 
     }
@@ -109,7 +109,7 @@ public class VideoStreamService {
      * @param path Path.
      * @return Long.
      */
-    private Long sizeFromFile(Path path) {
+    private Long getFileSize(Path path) {
         try {
             return Files.size(path);
         } catch (IOException ioException) {

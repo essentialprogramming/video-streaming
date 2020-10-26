@@ -102,4 +102,22 @@ final class ResourceUtils {
             return false;
         }
     }
+
+    public static boolean isAValidURL(String url) {
+        URL u = null;
+        HttpURLConnection huc = null;
+        try {
+            u = new URL(url);
+            huc =  (HttpURLConnection)  u.openConnection();
+            huc.setRequestMethod("HEAD");
+            huc.connect();
+            return (huc.getResponseCode() == HttpURLConnection.HTTP_OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (huc != null)
+                huc.disconnect();
+        }
+        return false;
+    }
 }

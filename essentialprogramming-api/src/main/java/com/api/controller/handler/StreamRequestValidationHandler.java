@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import javax.ws.rs.core.Response;
 
-import static com.api.constants.ApplicationConstants.SEGMENT;
 
 @Component
 public class StreamRequestValidationHandler implements BiHandler<String, String> {
@@ -41,7 +40,5 @@ public class StreamRequestValidationHandler implements BiHandler<String, String>
         if (!range.matches("^bytes=\\d*-\\d*(,\\d*-\\d*)*$")) {
             throw new ValidationException("bytes */" + videoStreamService.getFileSize(fileName), Response.Status.REQUESTED_RANGE_NOT_SATISFIABLE);
         }
-
     }
-
 }

@@ -56,7 +56,6 @@ public class FileInputResource implements InputResource {
             }
             return buffer.toByteArray();
         }
-
     }
 
     public URL getFile() {
