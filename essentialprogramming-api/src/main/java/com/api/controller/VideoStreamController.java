@@ -4,6 +4,7 @@ import com.api.config.Anonymous;
 import com.api.controller.handler.StreamRequestValidationHandler;
 import com.api.model.Range;
 import com.api.service.VideoStreamService;
+import com.api.validation.Validators;
 import com.config.ExecutorsProvider;
 import com.exception.ExceptionHandler;
 import com.util.async.Computation;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
@@ -53,19 +55,25 @@ public class VideoStreamController {
         logger.info(range);
 
         ExecutorService executorService = ExecutorsProvider.getExecutorService();
-        Computation.computeAsync(() -> stream(fileType, fileName, range), executorService)
+        Computation.computeAsync(() -> streamVideo(fileType, fileName, range), executorService)
                 .thenApplyAsync(asyncResponse::resume, executorService)
                 .exceptionally(error -> asyncResponse.resume(ExceptionHandler.handleException((CompletionException) error)));
 
     }
 
-    private Response stream(String fileType, String fileName, String byteRange) {
+    private Response streamVideo(String fileType, String fileName, String byteRange) {
         if (byteRange == null) {
             return Response.ok(SHORT_BYTE)
                     .status(Response.Status.OK)
                     .header(CONTENT_TYPE, VIDEO_CONTENT + fileType)
                     .build();
         }
+        return stream(fileType, fileName, byteRange);
+
+    }
+
+    private Response stream(String fileType, String fileName, @Valid @Validators.CheckRange(required = false)  String byteRange) {
+
         final String fullFileName = fileName + "." + fileType;
 
         //range validation

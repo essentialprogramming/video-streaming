@@ -151,6 +151,7 @@
             <artifactId>javax.el-api</artifactId>
             <version>${el-api.version}</version>
         </dependency>
+
         
         <!-- Swagger -->
         <dependency>
@@ -251,6 +252,35 @@
             <version>1.9</version>
         </dependency>
 
+        <!--Validation API implementation-->
+
+        <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.1.6.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator-annotation-processor</artifactId>
+            <version>6.1.6.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
+
+
+
 
 
 
@@ -326,8 +356,6 @@
                     </dependency>
                 </dependencies>
             </plugin>
-
-
 
         </plugins>
     </build>
