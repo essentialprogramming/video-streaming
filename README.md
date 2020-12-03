@@ -1,4 +1,4 @@
-# Video Streaming
+### Video Streaming
 ### ❄ Example of Video Streaming via HTTP 206 Partial Content to a Video Player
 
 http://159.65.124.175:8082/
@@ -26,5 +26,5 @@ Step 2 - Watch your favourite video
  1. Open your browser and go to: localhost:8082
  2. Open your browser and go to: localhost:8082/player.html 
 
-# Adaptive HTML5 Video Player
+## 💎 Adaptive HTML5 Video Player
 Video player that can play various video formats (MPEG-DASH, Smooth Streaming, MP4 etc.) with a single interface.
