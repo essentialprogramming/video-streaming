@@ -1,4 +1,3 @@
-### Video Streaming
 ### ❄ Example of Video Streaming via HTTP 206 Partial Content to a Video Player
 
 http://159.65.124.175:8082/
