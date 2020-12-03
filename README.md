@@ -3,13 +3,23 @@
 
 http://159.65.124.175:8082/
 
-# Dependencies
+Prerequisites:
+---------------
 
-FFmpeg https://www.ffmpeg.org/
-MP4Box https://gpac.wp.mines-telecom.fr/mp4box/
+* [java 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+* [maven](https://maven.apache.org/)
 
-# Usage
-`$ java -jar essentialprogramming.jar`
+### 🌀 Build and run
+Build
+---------------
+* Get the latest version from the git repository
+* Run: mvn clean install
+
+Run
+---------------
+Step 1 - Start the Server
+---------------
+ 'java -jar uber-essentialprogramming-api-1.0.0-SNAPSHOT.jar'
 
 # Adaptive HTML5 Video Player
 Video player that can play various video formats (MPEG-DASH, Smooth Streaming, MP4 etc.) with a single interface.
