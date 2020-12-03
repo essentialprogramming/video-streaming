@@ -18,7 +18,7 @@ factory.registerPlayer(new NativePlayer({
     "autoplay": false
 }));
 
-
+let urlMpdExtern = "http://www.bok.net/dash/tears_of_steel/cleartext/stream.mpd"
 let urlMp4 = "/api/video/stream/mp4/Tom&Jerry";
 let urlMpd = "manifest.mpd";
 
