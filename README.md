@@ -21,5 +21,10 @@ Step 1 - Start the Server
 ---------------
  'java -jar uber-essentialprogramming-api-1.0.0-SNAPSHOT.jar'
 
+Step 2 - Watch your favourite video
+---------------
+ 1. Open your browser and go to: localhost:8082
+ 2. Open your browser and go to: localhost:8082/player.html 
+
 # Adaptive HTML5 Video Player
 Video player that can play various video formats (MPEG-DASH, Smooth Streaming, MP4 etc.) with a single interface.
