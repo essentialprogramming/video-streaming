@@ -18,7 +18,7 @@ Run
 ---------------
 Step 1 - Start the Server
 ---------------
- 'java -jar uber-essentialprogramming-api-1.0.0-SNAPSHOT.jar'
+ `java -jar essentialprogramming-http-video-streaming.jar`
 
 Step 2 - Watch your favourite video
 ---------------
