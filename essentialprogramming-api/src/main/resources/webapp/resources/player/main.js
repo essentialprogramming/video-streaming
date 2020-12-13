@@ -19,10 +19,12 @@ factory.registerPlayer(new NativePlayer({
 }));
 
 let urlMpdExtern = "http://www.bok.net/dash/tears_of_steel/cleartext/stream.mpd"
+let urlThumbNail = "http://dash.edgesuite.net/akamai/bbb_30fps/bbb_with_multiple_tiled_thumbnails.mpd"
+let urlMultiPeriod = "https://dash.akamaized.net/dash264/TestCases/5a/nomor/1.mpd"
 let urlMp4 = "/api/video/stream/mp4/Tom&Jerry";
 let urlMpd = "manifest.mpd";
 
-factory.getPlayer(urlMpd).then(function (player) {
+factory.getPlayer(urlMultiPeriod).then(function (player) {
         const playControl = new PlayButton(player);
         const timeControl = new TimeControl(player);
 
