@@ -23,8 +23,9 @@ let urlThumbNail = "http://dash.edgesuite.net/akamai/bbb_30fps/bbb_with_multiple
 let urlMultiPeriod = "https://dash.akamaized.net/dash264/TestCases/5a/nomor/1.mpd"
 let urlMp4 = "/api/video/stream/mp4/Tom&Jerry";
 let urlMpd = "manifest.mpd";
+let streamM = "http://localhost:8080/consume/first"
 
-factory.getPlayer(urlMultiPeriod).then(function (player) {
+factory.getPlayer(streamM).then(function (player) {
         const playControl = new PlayButton(player);
         const timeControl = new TimeControl(player);
 
