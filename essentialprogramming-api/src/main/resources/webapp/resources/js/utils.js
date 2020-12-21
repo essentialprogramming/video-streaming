@@ -27,13 +27,14 @@ class Utils {
 
     static onMediaSuccess(stream) {
         stream.getTracks().forEach((track) => console.log(track));
-        let mediaRecorder  = new MediaStreamRecorder(stream);
-        mediaRecorder.mimeType = 'video/webm';
-        mediaRecorder.ondataavailable = function(blob) {
-            console.log(blob);
-            let blobURL = URL.createObjectURL(blob);
+        let options = {mimeType: 'video/webm;codecs=h264'};
+        let mediaRecorder  = new MediaRecorder(stream,options);
+        mediaRecorder.start(250);
+        mediaRecorder.ondataavailable  = function(blob) {
+            console.log(blob.data);
+            //let blobURL = URL.createObjectURL(blob);
         };
-        mediaRecorder.start();
+
     }
 
 }
