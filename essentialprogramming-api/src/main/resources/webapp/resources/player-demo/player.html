@@ -1,17 +1,22 @@
-<html>
+<html lang="en">
     <body>
-        <h1>Stream-m JavaScript Player Demo</h1>
-        <p>This page will play the stream called 'first' using the MediaSource API.</p>
+        <h1>Live JavaScript Player Demo</h1>
+        <p>This page will play a live stream using the MediaSource API.</p>
         <div id="playerContainer"></div>
         
         <script src="player.js"></script>
+        <script src="../js/header.js"></script>
         <script>
-            let playerContainer = document.getElementById("playerContainer");
-            let options = {
-                url: "http://localhost:8080/consume/first",
-                debug: true,
-            };
-            let player = new org.essentialprogramming.stream.Player(playerContainer, options);
+            docReady(async function () {
+                let playerContainer = document.getElementById("playerContainer");
+                let options = {
+                    url: "http://localhost:8080/consume/first",
+                    debug: true,
+                };
+                let player = new LivePlayer(playerContainer, options);
+                player.PlayStream();
+            });
+
         </script>
     </body>
 </html>
