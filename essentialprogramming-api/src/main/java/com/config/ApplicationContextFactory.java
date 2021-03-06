@@ -28,4 +28,8 @@ public class ApplicationContextFactory {
     public static <T> T getBean(String s, Class<T> type) {
         return ApplicationContextHolder.CONTEXT.getBean(s, type);
     }
+
+    public static <T> T getBean(Class<T> type) {
+        return ApplicationContextHolder.CONTEXT.getBean(type);
+    }
 }

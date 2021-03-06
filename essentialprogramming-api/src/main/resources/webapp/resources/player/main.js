@@ -25,7 +25,7 @@ let urlMp4 = "/api/video/stream/mp4/Tom&Jerry";
 let urlMpd = "manifest.mpd";
 let streamM = "http://localhost:8080/consume/first"
 
-factory.getPlayer(streamM).then(function (player) {
+factory.getPlayer(urlMpd).then(function (player) {
         const playControl = new PlayButton(player);
         const timeControl = new TimeControl(player);
 
