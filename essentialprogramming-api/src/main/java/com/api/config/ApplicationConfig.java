@@ -34,7 +34,7 @@ public class ApplicationConfig extends ResourceConfig {
         register(HealthController.class);
         register(MultiPartFeature.class);
 
-        //
+        //added comment to be removed
         OpenAPI openAPI = new OpenAPI()
                 .components(new Components())
                 .info(new Info()
