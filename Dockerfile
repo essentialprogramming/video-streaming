@@ -13,4 +13,4 @@ COPY --from=builder /app/essentialprogramming-api/target/essentialprogramming-ht
 
 EXPOSE 8082
 
-CMD java -jar ./app/uber-essentialprogramming-api-1.0.0-SNAPSHOT.jar
+CMD java -jar ./app/essentialprogramming-http-video-streaming.jar
