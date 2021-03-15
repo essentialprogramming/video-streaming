@@ -1,50 +1,6 @@
 <MPD xmlns="urn:mpeg:dash:schema:mpd:2011" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:mpeg:dash:schema:mpd:2011 http://standards.iso.org/ittf/PubliclyAvailableStandards/MPEG-DASH_schema_files/DASH-MPD.xsd" profiles="urn:mpeg:dash:profile:isoff-on-demand:2011" type="static" mediaPresentationDuration="PT4M45S" minBufferTime="PT4S">
     <ProgramInformation moreInformationURL="https://github.com/essentialprogramming"/>
-    <Period id="main"  start="PT0S" duration="PT1M0S">
-        <AdaptationSet mimeType="video/mp4" profiles="urn:mpeg:dash:profile:isoff-on-demand:2011" sar="1:1" frameRate="60000/1001" minBandwidth="240700" maxBandwidth="1498900" minWidth="160" maxWidth="1280" minHeight="90" maxHeight="720">
-            <Representation id="input_video_1280x720_1500k" bandwidth="1498900" width="1280" height="720" codecs="avc1.640020">
-                <BaseURL>/api/video/stream/mp4/input_video_1280x720_1500k</BaseURL>
-                <SegmentBase timescale="60000" indexRange="797-1584" indexRangeExact="true">
-                    <Initialization range="0-796"/>
-                </SegmentBase>
-            </Representation>
-            <Representation id="input_video_160x90_250k" bandwidth="240700" width="160" height="90" codecs="avc1.64000d">
-                <BaseURL>/api/video/stream/mp4/input_video_160x90_250k</BaseURL>
-                <SegmentBase timescale="60000" indexRange="797-1572" indexRangeExact="true">
-                    <Initialization range="0-796"/>
-                </SegmentBase>
-            </Representation>
-            <Representation id="input_video_320x180_500k" bandwidth="484300" width="320" height="180" codecs="avc1.640015">
-                <BaseURL>/api/video/stream/mp4/input_video_320x180_500k</BaseURL>
-                <SegmentBase timescale="60000" indexRange="797-1572" indexRangeExact="true">
-                    <Initialization range="0-796"/>
-                </SegmentBase>
-            </Representation>
-            <Representation id="input_video_640x360_1000k" bandwidth="984400" width="640" height="360" codecs="avc1.64001f">
-                <BaseURL>/api/video/stream/mp4/input_video_640x360_1000k</BaseURL>
-                <SegmentBase timescale="60000" indexRange="798-1585" indexRangeExact="true">
-                    <Initialization range="0-797"/>
-                </SegmentBase>
-            </Representation>
-            <Representation id="input_video_640x360_750k" bandwidth="739900" width="640" height="360" codecs="avc1.64001f">
-                <BaseURL>/api/video/stream/mp4/input_video_640x360_750k</BaseURL>
-                <SegmentBase timescale="60000" indexRange="798-1585" indexRangeExact="true">
-                    <Initialization range="0-797"/>
-                </SegmentBase>
-            </Representation>
-        </AdaptationSet>
-        <AdaptationSet mimeType="audio/mp4" profiles="urn:mpeg:dash:profile:isoff-on-demand:2011" lang="eng">
-            <Representation id="input_audio_128k" bandwidth="128500" codecs="mp4a.40.2" audioSamplingRate="44100">
-                <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-                <BaseURL>/api/video/stream/mp4/input_audio_128k</BaseURL>
-                <SegmentBase timescale="44100" indexRange="707-978" indexRangeExact="true">
-                    <Initialization range="0-706"/>
-                </SegmentBase>
-            </Representation>
-        </AdaptationSet>
-    </Period>
-
-    <Period id="main2" start="PT60S" duration="PT3M45S">
+    <Period id="main" start="PT0S" duration="PT4M45S">
         <AdaptationSet mimeType="video/mp4" profiles="urn:mpeg:dash:profile:isoff-on-demand:2011" sar="1:1" frameRate="60000/1001" minBandwidth="240700" maxBandwidth="1498900" minWidth="160" maxWidth="1280" minHeight="90" maxHeight="720">
             <Representation id="input_video_1280x720_1500k" bandwidth="1498900" width="1280" height="720" codecs="avc1.640020">
                 <BaseURL>/api/video/stream/mp4/input_video_1280x720_1500k</BaseURL>
