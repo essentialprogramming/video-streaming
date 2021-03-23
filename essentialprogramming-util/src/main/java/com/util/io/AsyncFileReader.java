@@ -31,26 +31,27 @@ public class AsyncFileReader {
     public static CompletableFuture<byte[]> readBytes(String fileName, int start, int length) throws IOException, URISyntaxException {
         final URL file = InputResource.getURL(fileName);
         final Path path = Paths.get(file.toURI());
+
+        CompletableFuture<byte[]> promise;
         try {
             ByteBuffer buffer = ByteBuffer.allocate(1024);
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             AsynchronousFileChannel asyncFile = AsynchronousFileChannel.open(path, StandardOpenOption.READ);
-            CompletableFuture<byte[]> future = readBytes(asyncFile, buffer, start, length, outputStream)
-                    .thenApply(position -> outputStream.toByteArray());
+            promise =
+                    AsyncFileReader.readBytes(asyncFile, buffer, start, length, outputStream)
+                            .thenApply(position -> outputStream.toByteArray())
+                            .whenCompleteAsync((position, exception) -> closeFileChannel(asyncFile));
 
-            future.whenCompleteAsync((position, exception) -> closeFileChannel(asyncFile));
-            return future;
-        } catch (Exception exception){
-            CompletableFuture<byte[]> promise = new CompletableFuture<>();
+        } catch (Exception exception) {
+            promise = new CompletableFuture<>();
             promise.completeExceptionally(exception);
-            return promise;
-
         }
+        return promise;
 
     }
 
-    static CompletableFuture<Integer> readBytes(AsynchronousFileChannel asyncFile, ByteBuffer buffer,
-                                                int position, int length, ByteArrayOutputStream out) {
+    private static CompletableFuture<Integer> readBytes(AsynchronousFileChannel asyncFile, ByteBuffer buffer,
+                                                        int position, int length, ByteArrayOutputStream out) {
         //System.out.println("Read bytes: (Length) (Position) " + length + " " + position);
         return readToByteArray(asyncFile, buffer, position, length, out)
                 .thenCompose(index -> index < 0 || length <= 0
