@@ -26,7 +26,6 @@ public class OpenConnectionsCounter implements EventHandler<StreamFragment> {
     public void onEvent(StreamFragment streamEvent, long sequence, boolean endOfBatch) throws Exception {
         counter.incrementAndGet();
         //Thread.sleep(1000);
-        System.out.println("Increment: " + OpenConnectionsCounter.counter.get());
         try {
             if (counter.get() > 10) {
                 LOCK.lock();

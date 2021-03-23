@@ -27,7 +27,10 @@ public class AsyncFileReaderHandler implements EventHandler<StreamFragment> {
     @Override
     public void onEvent(StreamFragment streamEvent, long sequence, boolean endOfBatch) throws Exception {
         final Range range = streamEvent.getRange();
-        System.out.println(videoStreamService);
+        if (!streamEvent.isValid()) {
+            System.out.println("Invalid stream fragment");
+            return;
+        }
         videoStreamService.readByteRangeAsync(streamEvent.getFileName(), range.start, range.end)
                 .thenAccept(data -> publish(streamEvent.getFileType(), range, data, streamEvent.getAsyncContext()))
                 .exceptionally(error -> null);
@@ -35,7 +38,6 @@ public class AsyncFileReaderHandler implements EventHandler<StreamFragment> {
 
     @SneakyThrows
     private void publish(String fileType, Range range, byte[] data, AsyncContext asyncContext) {
-        System.out.println("Decrement: " + OpenConnectionsCounter.counter.get());
         OpenConnectionsCounter.counter.decrementAndGet();
         EventTranslator<StreamFragment> eventTranslator = (reqEvent, sequence) -> {
             reqEvent.setData(data);
