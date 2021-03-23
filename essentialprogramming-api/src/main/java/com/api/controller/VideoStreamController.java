@@ -2,18 +2,22 @@ package com.api.controller;
 
 import com.api.config.Anonymous;
 import com.api.controller.handler.StreamRequestValidationHandler;
-import com.api.model.Range;
-import com.api.service.VideoStreamService;
+import com.api.disruptor.IncomingStreamRequestDisruptor;
+import com.api.events.StreamRequestTranslator;
 import com.api.validation.Validators;
 import com.config.ExecutorsProvider;
 import com.exception.ExceptionHandler;
 import com.util.async.Computation;
 import com.util.enums.Language;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.servlet.AsyncContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.container.AsyncResponse;
@@ -30,16 +34,20 @@ import static com.api.constants.ApplicationConstants.*;
 public class VideoStreamController {
 
     private static final Logger logger = LoggerFactory.getLogger(VideoStreamController.class);
-    private final VideoStreamService videoStreamService;
     private final StreamRequestValidationHandler streamRequestValidationHandler;
+    private final IncomingStreamRequestDisruptor incomingStreamRequestDisruptor;
 
     @Context
     private Language language;
+    @Context
+    private HttpServletRequest request;
+    @Context
+    private HttpServletResponse response;
 
     @Autowired
-    public VideoStreamController(VideoStreamService videoStreamService, StreamRequestValidationHandler streamRequestValidationHandler) {
-        this.videoStreamService = videoStreamService;
+    public VideoStreamController(StreamRequestValidationHandler streamRequestValidationHandler, IncomingStreamRequestDisruptor incomingStreamRequestDisruptor) {
         this.streamRequestValidationHandler = streamRequestValidationHandler;
+        this.incomingStreamRequestDisruptor = incomingStreamRequestDisruptor;
     }
 
     @GET
@@ -53,44 +61,43 @@ public class VideoStreamController {
                             @Suspended AsyncResponse asyncResponse) {
 
         logger.info(range);
+        assert request.isAsyncStarted();
+
+        final AsyncContext asyncContext = request.getAsyncContext();
 
         ExecutorService executorService = ExecutorsProvider.getExecutorService();
-        Computation.computeAsync(() -> streamVideo(fileType, fileName, range), executorService)
-                .thenApplyAsync(asyncResponse::resume, executorService)
+        Computation.runAsync(() -> streamVideo(fileType, fileName, range, asyncResponse, asyncContext), executorService)
+                .thenApply(____ -> true)
                 .exceptionally(error -> asyncResponse.resume(ExceptionHandler.handleException((CompletionException) error)));
 
     }
 
-    private Response streamVideo(String fileType, String fileName, String byteRange) {
+    @SneakyThrows
+    private void streamVideo(String fileType, String fileName, String byteRange,
+                             AsyncResponse asyncResponse,
+                             AsyncContext asyncContext) {
         if (byteRange == null) {
-            return Response.ok(SHORT_BYTE)
-                    .status(Response.Status.OK)
-                    .header(CONTENT_TYPE, VIDEO_CONTENT + fileType)
-                    .build();
+            asyncResponse.resume(
+                    Response.ok(SHORT_BYTE)
+                            .status(Response.Status.OK)
+                            .header(CONTENT_TYPE, VIDEO_CONTENT + fileType)
+                            .build());
+            return;
         }
-        return stream(fileType, fileName, byteRange);
+        stream(fileType, fileName, byteRange, asyncContext);
+
 
     }
 
-    private Response stream(String fileType, String fileName, @Valid @Validators.CheckRange(required = false)  String byteRange) {
+    private void stream(String fileType, String fileName,
+                        @Valid @Validators.CheckRange(required = false) String byteRange, AsyncContext asyncContext) {
 
+        final StreamRequestTranslator streamRequestTranslator = new StreamRequestTranslator(asyncContext, fileName, fileType, byteRange);
         final String fullFileName = fileName + "." + fileType;
 
         //range validation
         streamRequestValidationHandler.handle(byteRange, fullFileName);
-
-        final Range range = Range.of(byteRange, videoStreamService.getFileSize(fullFileName));
-
-
-        final byte[] data = videoStreamService.prepareContent(fullFileName, range.start, range.end);
-        final String contentLength = String.valueOf(range.length);
-        return Response.ok(data)
-                .status(Response.Status.PARTIAL_CONTENT) // 206.
-                .header(CONTENT_TYPE, VIDEO_CONTENT + fileType)
-                .header(ACCEPT_RANGES, BYTES)
-                .header(CONTENT_LENGTH, contentLength)
-                .header(CONTENT_RANGE, BYTES + " " + range.start + "-" + range.end + "/" + range.total)
-                .build();
+        incomingStreamRequestDisruptor.getDisruptor().publishEvent(streamRequestTranslator);
 
     }
 }

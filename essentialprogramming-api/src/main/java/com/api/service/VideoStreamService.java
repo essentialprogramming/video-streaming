@@ -1,7 +1,9 @@
 package com.api.service;
 
+import com.config.ApplicationContextFactory;
 import com.exception.ErrorCode;
 import com.util.exceptions.ServiceException;
+import com.util.io.AsyncFileReader;
 import com.util.io.FileInputResource;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
@@ -11,10 +13,12 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import static com.api.constants.ApplicationConstants.*;
 
@@ -22,6 +26,14 @@ import static com.api.constants.ApplicationConstants.*;
 public class VideoStreamService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private static class VideoStreamServiceHolder {
+        static final VideoStreamService INSTANCE = ApplicationContextFactory.getBean(VideoStreamService.class);
+    }
+
+    public static VideoStreamService getInstance(){
+        return VideoStreamServiceHolder.INSTANCE;
+    }
 
     /**
      * Prepare the content.
@@ -60,6 +72,11 @@ public class VideoStreamService {
 
     }
 
+    public CompletableFuture<byte[]> readByteRangeAsync(String fileName, long start, long end) throws IOException, URISyntaxException {
+        return AsyncFileReader.readBytes(PATH + "/" + fileName, (int) start, (int) (end - start) + 1);
+
+    }
+
     /**
      * Get the filePath.
      *
@@ -77,8 +94,7 @@ public class VideoStreamService {
     private URL getFile(String fileName) {
 
         FileInputResource fileInputResource = new FileInputResource(PATH + "/" + fileName);
-        URL url = fileInputResource.getFile();
-        return url;
+        return fileInputResource.getFile();
     }
 
     /**

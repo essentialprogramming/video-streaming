@@ -1,9 +1,7 @@
 package com.util.async;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,6 +44,10 @@ public final class Computation {
 				throw new CompletionException(ex);
 			}
 		}, executorService);
+	}
+
+	public static CompletableFuture<Void> runAsync(CompletableFuture<Void> callable, ExecutorService executorService) {
+		return callable;
 	}
 
 }

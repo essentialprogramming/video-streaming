@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-
 public class FileInputResource implements InputResource {
     private static final int BYTE_RANGE = 1024;
     private final URL file;
@@ -16,8 +15,7 @@ public class FileInputResource implements InputResource {
     }
 
     @Override
-    public InputStream getInputStream()
-            throws IOException {
+    public InputStream getInputStream() throws IOException {
         return new BufferedInputStream(file.openStream());
     }
 
