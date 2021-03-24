@@ -1,6 +1,7 @@
 package com.api.controller;
 
 import com.api.config.Anonymous;
+import com.api.constants.ApplicationConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -38,5 +39,13 @@ public class HealthController {
     @Anonymous
     public Response getReadiness() {
         return Response.ok("\n\nI'm ready to work!\n\n").build();
+    }
+
+
+    @GET
+    @Path("path")
+    @Anonymous
+    public Response getResourceBasePath() {
+        return Response.ok(ApplicationConstants.PATH).build();
     }
 }
