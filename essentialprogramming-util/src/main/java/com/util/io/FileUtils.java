@@ -124,8 +124,8 @@ public class FileUtils {
         }
 
         String pathStr = path.getAbsolutePath();
-        pathStr = pathStr.replace("\\classes", "");
-        pathStr = pathStr.replace("\\target", "");
+        pathStr = pathStr.replace(File.separator + "classes", "");
+        pathStr = pathStr.replace(File.separator +  "target", "");
 
         return new File(pathStr).getParentFile().getAbsolutePath();
     }
