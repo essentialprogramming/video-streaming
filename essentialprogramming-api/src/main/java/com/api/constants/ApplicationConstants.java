@@ -1,7 +1,11 @@
 package com.api.constants;
 
+import com.util.io.FileUtils;
+
+import java.io.File;
+
 public class ApplicationConstants {
-    public static final String PATH = "video";
+    public static final String PATH = FileUtils.getResourceBasePath() + File.separator +  "video";
 
     public static final String CONTENT_TYPE = "Content-Type";
     public static final String CONTENT_LENGTH = "Content-Length";

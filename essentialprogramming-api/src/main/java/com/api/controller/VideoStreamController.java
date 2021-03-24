@@ -61,8 +61,8 @@ public class VideoStreamController {
                             @Suspended AsyncResponse asyncResponse) {
 
         logger.info(range);
-        assert request.isAsyncStarted();
 
+        assert request.isAsyncStarted();
         final AsyncContext asyncContext = request.getAsyncContext();
 
         ExecutorService executorService = ExecutorsProvider.getExecutorService();

@@ -3,11 +3,8 @@ package com.util.io;
 
 import lombok.SneakyThrows;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UncheckedIOException;
+import java.io.*;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
@@ -29,10 +26,13 @@ public class AsyncFileReader {
     }
 
     public static CompletableFuture<byte[]> readBytes(String fileName, int start, int length) throws IOException, URISyntaxException {
-        final URL file = InputResource.getURL(fileName);
+        CompletableFuture<byte[]> promise = new CompletableFuture<>();
+        final File file = FileUtils.getFile(fileName);
+        if ( file == null)  {
+            promise.completeExceptionally(new FileNotFoundException());
+            return promise;
+        }
         final Path path = Paths.get(file.toURI());
-
-        CompletableFuture<byte[]> promise;
         try {
             ByteBuffer buffer = ByteBuffer.allocate(1024);
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -43,7 +43,6 @@ public class AsyncFileReader {
                             .whenCompleteAsync((position, exception) -> closeFileChannel(asyncFile));
 
         } catch (Exception exception) {
-            promise = new CompletableFuture<>();
             promise.completeExceptionally(exception);
         }
         return promise;
@@ -51,12 +50,11 @@ public class AsyncFileReader {
     }
 
     private static CompletableFuture<Integer> readBytes(AsynchronousFileChannel asyncFile, ByteBuffer buffer,
-                                                        int position, int length, ByteArrayOutputStream out) {
-        //System.out.println("Read bytes: (Length) (Position) " + length + " " + position);
-        return readToByteArray(asyncFile, buffer, position, length, out)
+                                                        int position, int length, ByteArrayOutputStream outputStream) {
+        return readToByteArray(asyncFile, buffer, position, length, outputStream)
                 .thenCompose(index -> index < 0 || length <= 0
                         ? completedFuture(position)
-                        : readBytes(asyncFile, (ByteBuffer) buffer.clear(), position + index, length - index, out));
+                        : readBytes(asyncFile, (ByteBuffer) buffer.clear(), position + index, length - index, outputStream));
 
     }
 

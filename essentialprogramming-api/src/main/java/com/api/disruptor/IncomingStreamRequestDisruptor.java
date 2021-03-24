@@ -28,7 +28,7 @@ public class IncomingStreamRequestDisruptor {
     }
 
     private Disruptor<StreamFragment> disruptor;
-    private final int ringBufferSize = (int) Math.pow(2, 20);
+    private final int ringBufferSize = (int) Math.pow(2, 15);
 
     @PostConstruct
     public void constructDisruptor() {
