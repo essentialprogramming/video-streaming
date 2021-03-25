@@ -62,4 +62,20 @@ public class HealthController {
                     .with("localizedMessage",exception.getLocalizedMessage()).done();
         }
     }
+
+    @GET
+    @Path("path2")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Anonymous
+    public JsonResponse getResourceBasePath2() {
+        try {
+            return new  JsonResponse().with("FileUtils.getResource : ",FileUtils.getResourceBasePath2()).done();
+        }
+        catch (Exception exception) {
+            return new JsonResponse().with("stackTrace", exception.getStackTrace())
+                    .with("cause",exception.getCause())
+                    .with("message",exception.getMessage())
+                    .with("localizedMessage",exception.getLocalizedMessage()).done();
+        }
+    }
 }

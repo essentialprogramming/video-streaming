@@ -132,6 +132,27 @@ public class FileUtils {
         return new File(pathStr).getParentFile().getAbsolutePath();
     }
 
+    public static String getResourceBasePath2() {
+        // Get the directory
+        File path = null;
+        try {
+            path = new File(InputResource.getURL("classpath:").getPath());
+        } catch (FileNotFoundException e) {
+            // nothing to do
+        }
+        if (path == null || !path.exists()) {
+            path = new File("");
+        }
+
+        String pathStr = path.getAbsolutePath();
+        pathStr = pathStr.replace(File.separator + "classes", "");
+        pathStr = pathStr.replace(File.separator +  "target", "");
+
+        return pathStr;
+    }
+
+
+
 
 
 
