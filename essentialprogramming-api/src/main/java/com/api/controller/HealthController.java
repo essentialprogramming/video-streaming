@@ -2,6 +2,7 @@ package com.api.controller;
 
 import com.api.config.Anonymous;
 import com.api.constants.ApplicationConstants;
+import com.util.io.FileUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -46,6 +47,12 @@ public class HealthController {
     @Path("path")
     @Anonymous
     public Response getResourceBasePath() {
-        return Response.ok(ApplicationConstants.PATH).build();
+        try {
+            return Response.ok(FileUtils.getResourceBasePath()).build();
+        }
+        catch (Exception exception){
+            return Response.ok(exception.getStackTrace()).build();
+        }
+
     }
 }
