@@ -129,7 +129,8 @@ public class FileUtils {
         pathStr = pathStr.replace(File.separator + "classes", "");
         pathStr = pathStr.replace(File.separator +  "target", "");
 
-        return new File(pathStr).getParentFile().getAbsolutePath();
+        return pathStr;
+        //return new File(pathStr).getParentFile().getAbsolutePath();
     }
 
     public static String getResourceBasePath2() {
@@ -154,7 +155,7 @@ public class FileUtils {
     public static String getResourceBasePath3() {
         // Get the directory
         File path = null;
-        
+
         path = new File("");
 
         String pathStr = path.getAbsolutePath();
