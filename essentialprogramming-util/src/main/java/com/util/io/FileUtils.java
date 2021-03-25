@@ -45,6 +45,8 @@ public class FileUtils {
         List<String> parts = new ArrayList<>(Arrays.asList(pattern.split(Pattern.quote(File.separator))));
         parts.removeIf(item -> item == null || "".equals(item));
 
+        path = Paths.get("/");
+
         while (!parts.isEmpty() && parts.size() > 1) {
             String segment = parts.remove(0);
             path = path.resolve(segment + File.separator);
