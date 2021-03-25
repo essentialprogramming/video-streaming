@@ -129,7 +129,7 @@ public class FileUtils {
         pathStr = pathStr.replace(File.separator + "classes", "");
         pathStr = pathStr.replace(File.separator +  "target", "");
 
-        return pathStr;
+        return "./app";
         //return new File(pathStr).getParentFile().getAbsolutePath();
     }
 
