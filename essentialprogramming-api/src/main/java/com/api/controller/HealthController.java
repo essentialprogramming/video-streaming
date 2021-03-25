@@ -11,7 +11,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.FileNotFoundException;
 
 @Path("/status/v1/health/")
 public class HealthController {
@@ -46,6 +49,7 @@ public class HealthController {
 
     @GET
     @Path("path")
+    @Produces(MediaType.APPLICATION_JSON)
     @Anonymous
     public JsonResponse getResourceBasePath() {
         try {
