@@ -3,6 +3,7 @@ package com.api.controller;
 import com.api.config.Anonymous;
 import com.api.constants.ApplicationConstants;
 import com.util.io.FileUtils;
+import com.web.json.JsonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,7 +11,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.FileNotFoundException;
 
 @Path("/status/v1/health/")
 public class HealthController {
@@ -45,13 +49,16 @@ public class HealthController {
 
     @GET
     @Path("path")
+    @Produces(MediaType.APPLICATION_JSON)
     @Anonymous
     public Response getResourceBasePath() {
         try {
-            return Response.ok(FileUtils.getResourceBasePath()).build();
-        }
-        catch (Exception exception){
-            return Response.ok(exception.getStackTrace()).build();
+            JsonResponse response = new JsonResponse()
+                    .with("Path", FileUtils.getResourceBasePath())
+                    .done();
+            return Response.ok(response).build();
+        } catch (Exception exception) {
+            return Response.ok(exception).build();
         }
 
     }
