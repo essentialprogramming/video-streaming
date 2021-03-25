@@ -3,6 +3,7 @@ package com.api.controller;
 import com.api.config.Anonymous;
 import com.api.constants.ApplicationConstants;
 import com.util.io.FileUtils;
+import com.web.json.JsonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -46,13 +47,15 @@ public class HealthController {
     @GET
     @Path("path")
     @Anonymous
-    public Response getResourceBasePath() {
+    public JsonResponse getResourceBasePath() {
         try {
-            return Response.ok(FileUtils.getResourceBasePath()).build();
+            return new  JsonResponse().with("FileUtils.getResource : ",FileUtils.getResourceBasePath()).done();
         }
-        catch (Exception exception){
-            return Response.ok(exception.getStackTrace()).build();
+        catch (Exception exception) {
+            return new JsonResponse().with("stackTrace", exception.getStackTrace())
+                    .with("cause",exception.getCause())
+                    .with("message",exception.getMessage())
+                    .with("localizedMessage",exception.getLocalizedMessage()).done();
         }
-
     }
 }
