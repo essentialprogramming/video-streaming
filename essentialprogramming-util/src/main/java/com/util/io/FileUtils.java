@@ -129,8 +129,10 @@ public class FileUtils {
         pathStr = pathStr.replace(File.separator + "classes", "");
         pathStr = pathStr.replace(File.separator +  "target", "");
 
-        return pathStr;
-        //return new File(pathStr).getParentFile().getAbsolutePath();
+        if (pathStr.equalsIgnoreCase("/")){
+            return pathStr;
+        }
+        return new File(pathStr).getParentFile().getAbsolutePath();
     }
 
     public static void main(String[] args) {
