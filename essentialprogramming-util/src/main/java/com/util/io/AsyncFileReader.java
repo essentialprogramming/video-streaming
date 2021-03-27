@@ -4,7 +4,6 @@ package com.util.io;
 import lombok.SneakyThrows;
 
 import java.io.*;
-import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
@@ -25,7 +24,7 @@ public class AsyncFileReader {
     private AsyncFileReader() {
     }
 
-    public static CompletableFuture<byte[]> readBytes(String fileName, int start, int length) throws IOException, URISyntaxException {
+    public static CompletableFuture<byte[]> readBytes(String fileName, int start, int length) {
         CompletableFuture<byte[]> promise = new CompletableFuture<>();
         final File file = FileUtils.getFile(fileName);
         if ( file == null)  {

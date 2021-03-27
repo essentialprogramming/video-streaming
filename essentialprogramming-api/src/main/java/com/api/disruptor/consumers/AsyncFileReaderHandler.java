@@ -39,7 +39,7 @@ public class AsyncFileReaderHandler implements EventHandler<StreamFragment> {
 
     @SneakyThrows
     private void publish(String fileType, Range range, byte[] data, AsyncContext asyncContext) {
-        OpenConnectionsCounter.counter.decrementAndGet();
+        OpenConnectionsCounter.decrement();
         EventTranslator<StreamFragment> eventTranslator = (videoFragment, sequence) -> {
             videoFragment.setData(data);
             videoFragment.setFileType(fileType);

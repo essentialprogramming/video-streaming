@@ -28,7 +28,7 @@ public class FileUtils {
         return files.size() > 0 ? files.get(0) : null;
     }
     public static List<File> getFiles(String basePath, String pattern) {
-        Path path = Paths.get(basePath);
+        Path path = StringUtils.isNotEmpty(basePath)? Paths.get(basePath):  Paths.get("/");
         if (path.isAbsolute()) {
             assert Files.isDirectory(path);
         } else {
@@ -45,7 +45,6 @@ public class FileUtils {
         List<String> parts = new ArrayList<>(Arrays.asList(pattern.split(Pattern.quote(File.separator))));
         parts.removeIf(item -> item == null || "".equals(item));
 
-        path = Paths.get("/");
 
         while (!parts.isEmpty() && parts.size() > 1) {
             String segment = parts.remove(0);
@@ -136,7 +135,9 @@ public class FileUtils {
     }
 
     public static void main(String[] args) {
-        System.err.println(FileUtils.getFiles("", "video/*.mp4"));
+        System.err.println(FileUtils.getFiles("", FileUtils.getResourceBasePath() + "/video/*.mp4"));
+        System.err.println(FileUtils.getFiles(FileUtils.getResourceBasePath(),  "video/*.mp4"));
+        System.err.println(FileUtils.getFiles("video",  "/*.mp4"));
 
     }
 }

@@ -1,0 +1,39 @@
+:host {
+    align-items: center;
+    display: flex;
+    user-select: none;
+    width: 100%;
+
+    #bar {
+        align-items: center;
+        background: #BBB;
+        display: flex;
+        height: 4px;
+        width: 100%;
+
+        .inner {
+            background: red;
+            height: 100%;
+            max-width: 100%;
+            position: relative;
+
+            .knob {
+                --size: var(--knob-size, 12px);
+                background: #FFF;
+                border-radius: 50%;
+                height: var(--size);
+                position: absolute;
+                right: -6px;
+                top: calc(50% - (var(--size) / 2));
+                transition: .5s;
+                width: var(--size);
+            }
+        }
+    }
+}
+
+::slotted(.buffer) {
+    display: block;
+    height: 4px;
+    background: rgba(255, 0, 0, .3);
+}

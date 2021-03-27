@@ -23,9 +23,22 @@ module.exports = {
                                 }
                             }],
                             "@babel/preset-react"
+                        ],
+                        "plugins": [
+                            ["@babel/plugin-proposal-decorators", { "legacy": true }],
+                            ["@babel/plugin-proposal-class-properties", { "loose": true }]
                         ]
                     }
                 }]
+            },
+            {
+                test: /\.css|\.s(c|a)ss$/,
+                use: [{
+                    loader: 'lit-scss-loader',
+                    options: {
+                        minify: true, // defaults to false
+                    },
+                }, 'extract-loader', 'css-loader', 'sass-loader'],
             }
         ],
     }

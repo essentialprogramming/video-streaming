@@ -1,31 +1,33 @@
 {
-  "name": "adapter-player",
-  "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
+  "name": "html5-video-player",
+  "version": "0.0.1",
   "scripts": {
     "build": "webpack -p",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Razvan Prichici",
   "devDependencies": {
-    "@babel/core": "^7.1.0",
-    "@babel/preset-env": "^7.1.0",
-    "@babel/preset-react": "^7.0.0",
-    "babel-loader": "^8.0.4",
-    "i18next": "^19.7.0",
-    "i18next-loader": "0.0.6",
+    "@babel/core": "^7.12.16",
+    "@babel/plugin-proposal-class-properties": "^7.12.13",
+    "@babel/plugin-proposal-decorators": "^7.12.13",
+    "@babel/preset-env": "^7.12.16",
+    "@babel/preset-react": "^7.12.13",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.1.1",
+    "dashjs": "^3.2.0",
+    "extract-loader": "^5.1.0",
+    "hasplayer.js": "^1.15.1",
+    "lit-html": "^1.3.0",
+    "lit-scss-loader": "^1.0.1",
+    "requirejs": "^2.3.6",
+    "sass": "^1.32.8",
+    "sass-loader": "^10.1.1",
     "webpack": "^4.19.1",
     "webpack-cli": "^3.1.1",
-    "webpack-dev-server": "^3.1.8",
-    "dashjs": "^3.2.0",
-    "hasplayer.js": "^1.15.1",
-    "requirejs": "^2.3.6"
+    "webpack-dev-server": "^3.1.8"
   },
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
-    "es6-promise": "^4.2.8",
-    "isomorphic-fetch": "^3.0.0",
-    "regenerator-runtime": "^0.13.7"
+    "@webcomponents/webcomponentsjs": "^2.5.0",
+    "lit-element": "^2.4.0"
   }
 }

@@ -59,5 +59,21 @@ body {
   }
 }
 
+video-player {
+  display: block;
+  width: 800px;
+  margin: 0 auto;
+}
+
+video-player .logo {
+  position: relative;
+  align-self: end;
+  justify-self: end;
+  bottom: 55px;
+  right: 10px;
+  height: 60px;
+}
+
+
 
 

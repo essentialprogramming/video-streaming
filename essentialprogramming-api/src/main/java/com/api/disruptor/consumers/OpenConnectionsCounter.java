@@ -35,7 +35,10 @@ public class OpenConnectionsCounter implements EventHandler<StreamFragment> {
             }
         } catch (InterruptedException ignore) {
         }
+    }
 
+    public static void decrement(){
+        counter.decrementAndGet();
     }
 
 

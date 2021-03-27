@@ -19,12 +19,15 @@ import static com.api.constants.ApplicationConstants.*;
 public class ResponseHandler implements EventHandler<StreamFragment> {
 
     @Override
-    public void onEvent(StreamFragment streamEvent, long sequence, boolean endOfBatch)  {
-        writeFragment(streamEvent.getFileType(), streamEvent.getRange(), streamEvent.getData(), streamEvent.getAsyncContext());
+    public void onEvent(StreamFragment streamEvent, long sequence, boolean endOfBatch) {
+        try {
+            writeFragment(streamEvent.getFileType(), streamEvent.getRange(), streamEvent.getData(), streamEvent.getAsyncContext());
+        } catch (Exception ignore) {
+        }
     }
 
     @SneakyThrows
-    private void writeFragment(String fileType, Range range, byte[] data, AsyncContext asyncContext){
+    private void writeFragment(String fileType, Range range, byte[] data, AsyncContext asyncContext) {
         try (ServletOutputStream outputStream = asyncContext.getResponse().getOutputStream()) {
             final HttpServletResponse servletResponse = (HttpServletResponse) asyncContext.getResponse();
             ResponseHandler.setResponseHeaders(fileType, range, servletResponse);
