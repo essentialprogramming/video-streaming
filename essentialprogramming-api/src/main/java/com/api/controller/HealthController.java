@@ -1,7 +1,6 @@
 package com.api.controller;
 
 import com.api.config.Anonymous;
-import com.util.io.FileUtils;
 import com.web.json.JsonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -46,19 +45,15 @@ public class HealthController {
 
 
     @GET
-    @Path("path")
+    @Path("memory-status")
     @Produces(MediaType.APPLICATION_JSON)
     @Anonymous
-    public JsonResponse getResourceBasePath() {
-        try {
-            return new  JsonResponse().with("FileUtils.getResource : ",FileUtils.getResourceBasePath()).done();
-        }
-        catch (Exception exception) {
-            return new JsonResponse().with("stackTrace", exception.getStackTrace())
-                    .with("cause",exception.getCause())
-                    .with("message",exception.getMessage())
-                    .with("localizedMessage",exception.getLocalizedMessage()).done();
-        }
+    public JsonResponse getMemoryStatistics() {
+        return new JsonResponse()
+                .with("Heap size : ", Runtime.getRuntime().totalMemory())
+                .with("Max Heap size : ", Runtime.getRuntime().maxMemory())
+                .with("Free Heap size : ", Runtime.getRuntime().freeMemory())
+                .done();
     }
 
 }

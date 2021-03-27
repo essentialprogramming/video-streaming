@@ -92,11 +92,11 @@ public class VideoStreamController {
     private void stream(String fileType, String fileName,
                         @Valid @Validators.CheckRange(required = false) String byteRange, AsyncContext asyncContext) {
 
-        final StreamRequestTranslator streamRequestTranslator = new StreamRequestTranslator(asyncContext, fileName, fileType, byteRange);
-        final String fullFileName = fileName + "." + fileType;
-
         //range validation
+        final String fullFileName = fileName + "." + fileType;
         streamRequestValidationHandler.handle(byteRange, fullFileName);
+
+        final StreamRequestTranslator streamRequestTranslator = new StreamRequestTranslator(asyncContext, fileName, fileType, byteRange);
         incomingStreamRequestDisruptor.getDisruptor().publishEvent(streamRequestTranslator);
 
     }

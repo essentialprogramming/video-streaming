@@ -21,20 +21,21 @@ public class IncomingStreamRequestDisruptor {
     private final OpenConnectionsCounter fileReadersCounter;
 
     @Autowired
-    public IncomingStreamRequestDisruptor(StreamFragmentFactory streamEventFactory, AsyncFileReaderHandler asyncFileReaderHandler, OpenConnectionsCounter fileReadersCounter) {
+    public IncomingStreamRequestDisruptor(StreamFragmentFactory streamEventFactory, AsyncFileReaderHandler asyncFileReaderHandler, OpenConnectionsCounter fileReadersCounter ) {
         this.streamEventFactory = streamEventFactory;
         this.asyncFileReaderHandler = asyncFileReaderHandler;
         this.fileReadersCounter = fileReadersCounter;
     }
 
     private Disruptor<StreamFragment> disruptor;
-    private final int ringBufferSize = (int) Math.pow(2, 15);
+    private final int ringBufferSize = (int) Math.pow(2, 12);
 
     @PostConstruct
     public void constructDisruptor() {
 
         disruptor = new Disruptor<>(streamEventFactory, ringBufferSize, DaemonThreadFactory.INSTANCE, ProducerType.SINGLE, new BlockingWaitStrategy());
-        disruptor.handleEventsWith(fileReadersCounter).then(asyncFileReaderHandler);
+        disruptor.handleEventsWith(fileReadersCounter)
+                .then(asyncFileReaderHandler);
 
         disruptor.start();
     }

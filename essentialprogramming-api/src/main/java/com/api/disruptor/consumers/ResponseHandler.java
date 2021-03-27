@@ -25,14 +25,15 @@ public class ResponseHandler implements EventHandler<StreamFragment> {
 
     @SneakyThrows
     private void writeFragment(String fileType, Range range, byte[] data, AsyncContext asyncContext){
-        try {
-            final ServletOutputStream outputStream = asyncContext.getResponse().getOutputStream();
+        try (ServletOutputStream outputStream = asyncContext.getResponse().getOutputStream()) {
             final HttpServletResponse servletResponse = (HttpServletResponse) asyncContext.getResponse();
-            setResponseHeaders(fileType, range, servletResponse);
+            ResponseHandler.setResponseHeaders(fileType, range, servletResponse);
+
             outputStream.write(data, 0, data.length);
             outputStream.flush();
+        } catch (Exception ignore) {
+        } finally {
             asyncContext.complete();
-        } catch (Exception ignore){
         }
 
     }
