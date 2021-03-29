@@ -42,11 +42,15 @@ export default class Utils {
     }
 
     static toggleFullScreen(element) {
-        if (document.fullscreen && document.fullscreenElement === element) {
+        if (Utils.isDocumentInFullScreenMode() && document.fullscreenElement === element) {
             document.exitFullscreen();
         } else {
             this.requestFullScreen(element);
         }
+    }
+
+    static isDocumentInFullScreenMode() {
+        return document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
     }
 
     static hideTextTracks(videoElement) {

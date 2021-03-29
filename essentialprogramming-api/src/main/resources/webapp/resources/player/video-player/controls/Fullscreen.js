@@ -14,7 +14,7 @@ export default class Fullscreen {
         this.element.addEventListener('click', () => Utils.toggleFullScreen(this.fullScreenElement));
 
         document.onfullscreenchange = event => {
-            if (document.fullscreen) {
+            if (Utils.isDocumentInFullScreenMode()) {
                 Utils.setClass(this.element, 'compress');
             } else {
                 this.element.classList.remove('compress');

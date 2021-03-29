@@ -1,9 +1,11 @@
-import { html } from 'lit-element';
+import {html} from 'lit-element';
 
 export const template = html`
         <div id="controls-wrapper">
             <div class="left">
-                <div id="play-btn"></div>
+                <div id="play-btn">
+                    <i class = "play "></i>
+                </div>
                 <div id="volume-wrapper">
                     <div id="mute-btn"></div>
                     <control-bar id="volume-bar" value="100"></control-bar>

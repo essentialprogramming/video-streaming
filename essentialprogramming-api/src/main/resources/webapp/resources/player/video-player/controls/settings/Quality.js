@@ -1,4 +1,5 @@
 import Utils from '../../common/Utils';
+import Collections from "../../common/Collections";
 
 export default class Quality {
     constructor(playerAdapter) {
@@ -30,7 +31,7 @@ export default class Quality {
         const qualityOptionsWrapper = document.createElement('div');
         Utils.setClass(qualityOptionsWrapper, 'quality');
 
-        const qualityOptions = this.playerAdapter.getQualityOptions();
+        const qualityOptions = Collections.removeDuplicates(this.playerAdapter.getQualityOptions());
         qualityOptions.map(option => {
             const renderedOption = this.createQualityOption(option.name, option.value);
             qualityOptionsWrapper.appendChild(renderedOption);
@@ -45,9 +46,35 @@ export default class Quality {
         wrapper.addEventListener('click', () => this.playerAdapter.setQuality(optionValue));
 
         const name = document.createElement('div');
-        name.textContent = optionName;
+        name.textContent = this.getQualityLabels(optionName);
         wrapper.appendChild(name);
 
         return wrapper;
 	}
+
+
+    getQualityLabels(height) {
+        height = Number(height)
+        let label;
+        if (height <= 144) {
+            label = '144p';
+        } else if (height <= 240) {
+            label = '240p';
+        } else if (height <= 360) {
+            label = '360p';
+        } else if (height <= 480) {
+            label = 'SD 480p';
+        } else if (height <= 720) {
+            label = 'HD 720p';
+        } else if (height <= 1080) {
+            label = 'HD 1080p';
+        } else if (height <= 1440) {
+            label = 'HD 1440p';
+        } else if (height <= 2160) {
+            label = '4K 2160p';
+        } else {
+            return '';
+        }
+        return label;
+    };
 }

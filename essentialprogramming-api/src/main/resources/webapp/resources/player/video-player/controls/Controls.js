@@ -11,14 +11,14 @@ import Utils from '../common/Utils';
 export default class Controls {
     constructor(videoPlayer) {
         this.videoPlayer = videoPlayer;
-        this.videoPlayer.addEventListener('adapterset', () => {
+        this.videoPlayer.addEventListener('playerReady', () => {
             this.playerAdapter = this.videoPlayer.playerAdapter;
             this.init();
         });
     }
 
     init() {
-        this.addPlayButton();
+        this.initPlayButton();
         this.addMuteButton();
         this.addTimer();
         this.addSettings();
@@ -26,11 +26,8 @@ export default class Controls {
         this.addSeekBar();
     }
 
-    addPlayButton() {
-        this.playController = new PlayController(this.playerAdapter);
-        const buttonElement = this.videoPlayer.shadowRoot.getElementById('play-btn');
-        buttonElement.appendChild(this.playController.getElement());
-
+    initPlayButton() {
+        this.playController = new PlayController(this.playerAdapter, this.videoPlayer.shadowRoot);
         this.videoPlayer.videoElement.addEventListener('click', () => this.playerAdapter.toggle());
     }
 

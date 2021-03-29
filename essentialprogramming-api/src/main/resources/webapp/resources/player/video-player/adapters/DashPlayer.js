@@ -50,9 +50,6 @@ export default class DashPlayer extends AbstractPlayer {
         return /\.mpd$/i.test(url);
     }
 
-    toggle() {
-        this.player.isPaused() ? this.play() : this.pause();
-    }
 
     isPaused() {
         return this.player.isPaused();

@@ -1,4 +1,4 @@
-import Factory from '../PlayerFactory';
+import Factory from './PlayerFactory';
 import DashPlayer from './DashPlayer';
 import NativePlayer from './NativePlayer';
 

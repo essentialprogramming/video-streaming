@@ -1,7 +1,7 @@
-import { LitElement, html } from 'lit-element';
-import Bar from './video-player/controls/Bar/Bar';
-import { template as controlsTemplate } from './video-player/controls/template';
-import { registerPlayers } from './video-player/adapters/utils';
+import {LitElement, html} from 'lit-element';
+import Bar from './video-player/controls/bar/Bar';
+import {template as controlsTemplate} from './video-player/controls/template/template';
+import {registerPlayers} from './video-player/adapters/utils';
 import Controls from './video-player/controls/Controls';
 
 import styles from './styles/video-player.scss';
@@ -23,7 +23,7 @@ class VideoPlayer extends LitElement {
                 this.factory.getPlayer(this.src)
                     .then(playerAdapter => {
                         this.playerAdapter = playerAdapter;
-                        this.dispatchEvent(new CustomEvent('adapterset'));
+                        this.dispatchEvent(new CustomEvent('playerReady'));
                     }, alert);
             } catch (err) {
                 console.error(err);
@@ -53,10 +53,10 @@ class VideoPlayer extends LitElement {
         return html`
             <div id="video-wrapper">
                 <video id="video-player"></video>
-            ${controlsTemplate}
-            <div class="text-overlay">
-                <slot></slot>
-            </div>
+                ${controlsTemplate}
+                <div class="text-overlay">
+                   <slot></slot>
+                </div>
             </div>
         `;
     }

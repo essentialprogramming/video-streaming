@@ -14,10 +14,6 @@ export default class NativePlayer extends AbstractPlayer {
         return true;
     }
 
-    toggle() {
-        this.player.paused ? this.player.play() : this.player.pause();
-    }
-
     isPaused() {
         return this.player.paused;
     }

@@ -1,4 +1,4 @@
-import AbstractPlayer from './adapters/AbstractPlayer';
+import AbstractPlayer from './AbstractPlayer';
 
 export default class PlayerFactory {
     constructor() {

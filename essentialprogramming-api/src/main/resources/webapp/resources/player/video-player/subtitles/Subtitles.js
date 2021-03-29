@@ -1,7 +1,7 @@
 export default class Subtitles {
     constructor(videoPlayer) {
         this.videoPlayer = videoPlayer;
-        this.videoPlayer.addEventListener('adapterset', () => this.init());
+        this.videoPlayer.addEventListener('playerReady', () => this.init());
     }
 
     init() {

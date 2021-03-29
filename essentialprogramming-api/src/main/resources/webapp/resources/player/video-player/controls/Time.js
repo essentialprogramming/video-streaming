@@ -30,7 +30,7 @@ function formatTime(time) {
     const seconds = Number(time);
 
     let hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor(seconds % 3600 / 60);
+    let minutes = Math.floor(seconds % 3600 / 60);
     let sec = Math.floor(seconds % 3600 % 60);
 
     hours = hours ? `${hours}:` : '';

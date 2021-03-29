@@ -1,5 +1,4 @@
 import AbstractPlayer from '../adapters/AbstractPlayer.js';
-import Bar from './Bar/Bar';
 import Utils from '../common/Utils';
 
 export default class SeekBar {

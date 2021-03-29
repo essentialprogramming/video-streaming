@@ -21,6 +21,14 @@ export default class AbstractPlayer {
         this.player.pause();
     }
 
+    toggle() {
+        this.isPaused() ? this.play() : this.pause();
+    }
+
+    isPaused() {
+        throw new Error('You have to implement the method isPaused()!');
+    }
+
     isEventSupported(type) {
         return !!this.constructor[type];
     }

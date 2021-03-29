@@ -2,6 +2,12 @@
     <ProgramInformation moreInformationURL="https://github.com/essentialprogramming"/>
     <Period id="main" start="PT0S" duration="PT4M45S">
         <AdaptationSet mimeType="video/mp4" profiles="urn:mpeg:dash:profile:isoff-on-demand:2011" sar="1:1" frameRate="60000/1001" minBandwidth="240700" maxBandwidth="1498900" minWidth="160" maxWidth="1280" minHeight="90" maxHeight="720">
+            <Representation id="input_video_1920x1080_1500k" bandwidth="1598900" width="1920" height="1080" codecs="avc1.640020">
+                <BaseURL>/api/video/stream/mp4/input_video_1280x720_1500k</BaseURL>
+                <SegmentBase timescale="60000" indexRange="797-1584" indexRangeExact="true">
+                    <Initialization range="0-796"/>
+                </SegmentBase>
+            </Representation>
             <Representation id="input_video_1280x720_1500k" bandwidth="1498900" width="1280" height="720" codecs="avc1.640020">
                 <BaseURL>/api/video/stream/mp4/input_video_1280x720_1500k</BaseURL>
                 <SegmentBase timescale="60000" indexRange="797-1584" indexRangeExact="true">
@@ -22,12 +28,6 @@
             </Representation>
             <Representation id="input_video_640x360_1000k" bandwidth="984400" width="640" height="360" codecs="avc1.64001f">
                 <BaseURL>/api/video/stream/mp4/input_video_640x360_1000k</BaseURL>
-                <SegmentBase timescale="60000" indexRange="798-1585" indexRangeExact="true">
-                    <Initialization range="0-797"/>
-                </SegmentBase>
-            </Representation>
-            <Representation id="input_video_640x360_750k" bandwidth="739900" width="640" height="360" codecs="avc1.64001f">
-                <BaseURL>/api/video/stream/mp4/input_video_640x360_750k</BaseURL>
                 <SegmentBase timescale="60000" indexRange="798-1585" indexRangeExact="true">
                     <Initialization range="0-797"/>
                 </SegmentBase>
