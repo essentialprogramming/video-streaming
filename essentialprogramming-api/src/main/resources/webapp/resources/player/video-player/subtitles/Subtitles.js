@@ -1,11 +1,43 @@
+import Utils from '../common/Utils';
+
 export default class Subtitles {
     constructor(videoPlayer) {
         this.videoPlayer = videoPlayer;
-        this.videoPlayer.addEventListener('playerReady', () => this.init());
+        this.videoElement = this.videoPlayer.videoElement;
+        this.subtitlesActive = false;
+        this.init().catch(error => console.log('Could not initialize subtitles, due to ' + error));
     }
 
-    init() {
-        this.videoPlayer.videoElement.appendChild(this.getTrackMarkup());
+    async init() {
+        this.videoElement.appendChild(this.getTrackMarkup());
+        this.subtitlesWrapper = this.videoPlayer.shadowRoot.getElementById('subtitles-wrapper');
+        Utils.hideTextTracks(this.videoPlayer.videoElement);
+
+        const track = this.videoElement.textTracks[0];
+        track.oncuechange = () => {
+            if (this.subtitlesActive) {
+                this.renderCues(track);
+            }
+        }
+
+        this.videoPlayer.addEventListener('subtitlesToggled', event => {
+            this.subtitlesActive = event.detail;
+            if (event.detail) {
+                this.renderCues(track);
+            } else {
+                this.subtitlesWrapper.innerHTML = null;
+            }
+        });
+    }
+
+    renderCues(track) {
+        this.subtitlesWrapper.innerHTML = null;
+        for (const cue of track.activeCues) {
+            const renderedCue = document.createElement('div');
+            Utils.setClass(renderedCue, 'cue');
+            renderedCue.textContent = cue.text;
+            this.subtitlesWrapper.appendChild(renderedCue);
+        }
     }
 
     getTrackMarkup() {

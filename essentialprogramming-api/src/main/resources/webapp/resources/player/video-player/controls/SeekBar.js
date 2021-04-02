@@ -2,22 +2,32 @@ import AbstractPlayer from '../adapters/AbstractPlayer.js';
 import Utils from '../common/Utils';
 
 export default class SeekBar {
-    constructor(playerAdapter) {
+    constructor(playerAdapter, root) {
         this.playerAdapter = playerAdapter;
+        this.root = root;
+        this.init().catch(error => console.log('Could not initialize seek bar button, due to ' + error));
     }
 
-    getElement() {
-        if (this.element) {
-            return this.element;
-        }
+    async init() {
+        this.bar = this.root.querySelector('#seek-bar');
 
-        this.element = document.createElement('control-bar');
-        this.element.setAttribute('id', 'seek-bar');
-        this.element.setAttribute('value', 0);
-        this.addBufferElement();
-        this.addListeners();
+        this.bar.addEventListener('change', event => {
+            const seconds = event.detail / 100 * this.playerAdapter.getDuration();
+            this.playerAdapter.seek(seconds);
+        });
 
-        return this.element;
+        this.playerAdapter.addEventListener(AbstractPlayer.EVENT_TIMEUPDATE, (event) => {
+            const seekPercentage = this.playerAdapter.getCurrentTime() / this.playerAdapter.getDuration() * 100;
+            this.bar.setAttribute('value', seekPercentage);
+            const bufferWidth = this.playerAdapter.getBufferSize() / this.playerAdapter.getDuration() * 100;
+            this.bar.setAttribute('bufferSize', bufferWidth);
+        });
+
+        this.playerAdapter.addEventListener(AbstractPlayer.EVENT_SEEK, (event) => {
+            this.bar.setAttribute('bufferSize', 0);
+        });
+
+        
     }
 
     addBufferElement() {
@@ -25,25 +35,6 @@ export default class SeekBar {
 
         Utils.setClass(this.bufferElement, 'buffer');
         this.bufferElement.setAttribute('slot', 'buffer');
-        this.element.appendChild(this.bufferElement);
-    }
-
-    addListeners() {
-        this.playerAdapter.addEventListener(AbstractPlayer.EVENT_TIMEUPDATE, (event) => {
-            const seekPercentage = this.playerAdapter.getCurrentTime() / this.playerAdapter.getDuration() * 100;
-            this.element.setAttribute('value', seekPercentage);
-            const bufferWidth = this.playerAdapter.getBufferSize() / this.playerAdapter.getDuration() * 100;
-            this.element.setAttribute('bufferSize', bufferWidth);
-        });
-
-        this.playerAdapter.addEventListener(AbstractPlayer.EVENT_SEEK, (event) => {
-            this.element.setAttribute('bufferSize', 0);
-        });
-
-        this.element.addEventListener('change', event => {
-            const seconds = event.detail / 100 * this.playerAdapter.getDuration();
-            this.playerAdapter.seek(seconds);
-        });
-
+        this.bar.appendChild(this.bufferElement);
     }
 }

@@ -1,86 +1,26 @@
 @import './icons';
+@import './subtitles';
+@import './settings';
+@import './controls';
+
+:host {
+    overflow: hidden;
+}
+
+:host(.interacting),
+:host(.settings-open),
+:host(:not(.hide-controls)) {
+    #video-wrapper {
+        #overlay {
+            height: calc(100% - 48px);
+        }
+    }
+}
 
 #video-wrapper {
     height: 100%;
     position: relative;
     width: 100%;
-
-    #settings-wrapper {
-        background: rgba(238, 0, 67, .6);
-        bottom: 50px;
-        box-shadow: 0 0 14px 3px rgba(0, 0, 0, .25);
-        color: #FFF;
-        overflow: hidden;
-        position: absolute;
-        right: 60px;
-        transform: scale(0);
-        transform-origin: 100% 100%;
-        transition: .2s;
-        width: 140px;
-        z-index: 1;
-
-        &.open {
-            padding: 5px 0;
-            transform: scale(1);
-        }
-
-        * {
-            transition: .4s;
-        }
-
-        & > * {
-            display: none;
-        }
-
-        .option {
-            align-items: center;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 10px;
-
-            &:hover {
-                background: rgba(230, 0, 47, .7);
-            }
-
-            &.back {
-                justify-content: flex-start;
-                margin-bottom: 10px;
-                padding: 0;
-
-                i {
-                    transform: rotate(180deg);
-                    margin-right: 5px;
-                }
-            }
-
-            i {
-                @include right-angle-icon('#FFF');
-                cursor: pointer;
-                display: block;
-                height: 20px;
-                width: 20px;
-            }
-        }
-
-        &.main {
-            .main {
-                display: block;
-            }
-        }
-
-        &.quality {
-            .quality {
-                display: block;
-            }
-        }
-
-        &.speed {
-            .speed {
-                display: block;
-            }
-        }
-    }
 
     video {
         display: block;
@@ -88,135 +28,7 @@
         width: 100%;
     }
 
-    #controls-wrapper {
-        align-content: center;
-        background: rgba(0, 0, 0, .3);
-        box-sizing: border-box;
-        bottom: 0;
-        display: flex;
-        height: 44px;
-        justify-content: space-between;
-        left: 0;
-        padding: 14px 0 10px;
-        position: absolute;
-        width: 100%;
-
-        #seek-bar {
-            cursor: pointer;
-            height: 20px;
-            left: 0;
-            margin: 0 10px;
-            position: absolute;
-            top: -8px;
-            width: calc(100% - 20px);
-        }
-
-        .left,
-        .right {
-            display: flex;
-            align-content: center;
-        }
-
-        .left {
-            #play-btn {
-                margin: 0 20px;
-
-                i {
-                    cursor: pointer;
-                    display: block;
-                    height: 20px;
-                    width: 20px;
-
-                    &.play {
-                        @include play-icon('#FFF');
-                    }
-
-                    &.pause {
-                        @include pause-icon('#FFF');
-                    }
-                }
-            }
-
-            #volume-wrapper {
-                display: flex;
-                padding-right: 20px;
-
-                &.open,
-                &:hover {
-                    #volume-bar {
-                        --knob-size: 12px;
-                        margin-left: 20px;
-                        width: 100px;
-                    }
-                }
-
-                #mute-btn {
-                    i {
-                        @include volume-up-icon('#FFF');
-                        cursor: pointer;
-                        display: block;
-                        height: 20px;
-                        width: 20px;
-
-                        &.muted {
-                            @include muted-icon('#FFF');
-                        }
-                    }
-                }
-
-                #volume-bar {
-                    --knob-size: 0px;
-                    cursor: pointer;
-                    height: 20px;
-                    width: 0px;
-                    transition: .5s;
-                }
-            }
-
-            #timer {
-                color: #FFF;
-            }
-        }
-
-        .right {
-            #settings-btn {
-                i {
-                    @include settings-icon('#FFF');
-                    cursor: pointer;
-                    display: block;
-                    height: 20px;
-                    width: 20px;
-                    transition: .2s;
-
-                    &.open {
-                        transform: rotate(-60deg);
-                    }
-
-                    &.quality-changing {
-                        animation: rotation 1s ease-in-out 0s infinite alternate-reverse;
-                    }
-                }
-            }
-
-            #fullscreen-btn {
-                margin: 0 20px;
-
-                i {
-                    @include expand-icon('#FFF');
-                    cursor: pointer;
-                    display: block;
-                    height: 20px;
-                    width: 20px;
-
-                    &.compress {
-                        @include compress-icon('#FFF');
-                    }
-                }
-            }
-        }
-    }
-
-    .text-overlay {
+    #overlay {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: repeat(3, 1fr);
@@ -226,6 +38,7 @@
         width: 100%;
         height: 100%;
         pointer-events: none;
+        transition: .3s;
 
         ::slotted(.top) {
             grid-row: 1 / 2;
@@ -257,6 +70,7 @@
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(239deg);
     }

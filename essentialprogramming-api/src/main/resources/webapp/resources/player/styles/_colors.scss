@@ -1,0 +1,24 @@
+$bg-controls-wrapper: rgba(0, 0, 0, .3);
+
+$bg-control-bar:        #BBB;
+$bg-control-bar-knob:   #FFF;
+$bg-control-bar-inner:  #F00;
+$bg-control-bar-buffer: rgba(255, 0, 0, .3);
+
+$bg-settings-wrapper:   rgba(238, 0, 67, .6);
+$bg-settings-option:    rgba(230, 0, 47, .7);
+$color-settings-option: #FFF;
+
+$color-timer:           #FFF;
+
+// Icons fill must be written as strings in order for the mixins to work.
+$fill-icons:            '#FFF';
+$fill-play-btn:         $fill-icons;
+$fill-pause-btn:        $fill-icons;
+$fill-mute-btn:         $fill-icons;
+$fill-settings-btn:     $fill-icons;
+$fill-fullscreen-btn:   $fill-icons;
+$fill-expand-menu-icon: $fill-icons;
+
+$bg-subtitles:          rgba(0, 0, 0, .6);
+$color-subtitles:       #FFF;

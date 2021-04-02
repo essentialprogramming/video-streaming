@@ -1,4 +1,6 @@
 import AbstractPlayer from './AbstractPlayer';
+import DashPlayer from "./DashPlayer";
+import NativePlayer from "./NativePlayer";
 
 export default class PlayerFactory {
     constructor() {
@@ -20,5 +22,19 @@ export default class PlayerFactory {
         }
 
         return Promise.reject('Cannot find player to play.');
+    }
+
+    registerPlayers(element, bufferSize = 10) {
+        this.registerPlayer(new DashPlayer({
+            videoElement: element,
+            src: 'http://cdn.dashjs.org/latest/dash.all.min.js',
+            autoplay: false,
+            bufferSize: bufferSize
+        }));
+
+        this.registerPlayer(new NativePlayer({
+            videoElement: element,
+            autoplay: false,
+        }));
     }
 }

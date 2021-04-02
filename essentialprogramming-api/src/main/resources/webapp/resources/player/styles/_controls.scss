@@ -1,0 +1,140 @@
+@import './colors';
+
+:host(.interacting),
+:host(.settings-open),
+:host(:not(.hide-controls)) {
+    #controls-wrapper {
+        bottom: 0;
+    }
+}
+
+#controls-wrapper {
+    align-content: center;
+    background: $bg-controls-wrapper;
+    box-sizing: border-box;
+    bottom: -48px;
+    display: flex;
+    height: 44px;
+    justify-content: space-between;
+    left: 0;
+    padding: 14px 0 10px;
+    position: absolute;
+    transition: .3s;
+    width: 100%;
+    z-index: 3;
+
+    #seek-bar {
+        cursor: pointer;
+        height: 20px;
+        left: 0;
+        margin: 0 10px;
+        position: absolute;
+        top: -8px;
+        width: calc(100% - 20px);
+    }
+
+    .left,
+    .right {
+        display: flex;
+        align-content: center;
+    }
+
+    .left {
+        #play-btn {
+            margin: 0 20px;
+
+            i {
+                @include play-icon($fill-play-btn);
+                cursor: pointer;
+                display: block;
+                height: 20px;
+                width: 20px;
+
+                &.pause {
+                    @include pause-icon($fill-pause-btn);
+                }
+            }
+        }
+
+        #volume-wrapper {
+            display: flex;
+            padding-right: 20px;
+
+            &.open,
+            &:hover {
+                #volume-bar {
+                    --knob-size: 12px;
+                    margin-left: 20px;
+                    width: 100px;
+                }
+            }
+
+            #mute-btn {
+                @include volume-up-icon($fill-mute-btn);
+                cursor: pointer;
+                display: block;
+                height: 20px;
+                width: 20px;
+
+                &.muted {
+                    @include muted-icon($fill-mute-btn);
+                }
+            }
+
+            #volume-bar {
+                --knob-size: 0px;
+                cursor: pointer;
+                height: 20px;
+                width: 0px;
+                transition: .5s;
+            }
+        }
+
+        #timer {
+            color: #FFF;
+        }
+    }
+
+    .right {
+        #settings-btn {
+            &.open {
+                i {
+                    transform: rotate(-60deg);
+                }
+            }
+
+            &.quality-changing {
+                i {
+                    animation: rotation 1s ease-in-out 0s infinite alternate-reverse;
+                }
+            }
+
+            i {
+                @include settings-icon($fill-settings-btn);
+                cursor: pointer;
+                display: block;
+                height: 20px;
+                width: 20px;
+                transition: .2s;
+            }
+        }
+
+        #fullscreen-btn {
+            margin: 0 20px;
+
+            &.compress {
+                i {
+                    @include compress-icon($fill-fullscreen-btn);
+                }
+            }
+
+            i {
+                @include expand-icon($fill-fullscreen-btn);
+                cursor: pointer;
+                display: block;
+                height: 20px;
+                width: 20px;
+            }
+        }
+    }
+}

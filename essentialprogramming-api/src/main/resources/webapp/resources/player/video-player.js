@@ -1,30 +1,33 @@
-import {LitElement, html} from 'lit-element';
-import Bar from './video-player/controls/bar/Bar';
-import {template as controlsTemplate} from './video-player/controls/template/template';
-import {registerPlayers} from './video-player/adapters/utils';
+import { LitElement } from 'lit-element';
+import getPlayerTemplate from './video-player/template/template';
 import Controls from './video-player/controls/Controls';
-
 import styles from './styles/video-player.scss';
-
 import SubtitlesController from './video-player/subtitles/Subtitles';
+import Factory from "./video-player/adapters/PlayerFactory";
 
 class VideoPlayer extends LitElement {
     constructor() {
         super();
         this.bufferSize = 0;
+        this.factory = new Factory()
         this.controls = new Controls(this);
 
         this.addEventListener('rendered', async () => {
             try {
                 await this.updateComplete;
                 this.videoElement = this.shadowRoot.getElementById('video-player');
-                this.factory = registerPlayers(this.videoElement, this.bufferSize);
+                this.factory.registerPlayers(this.videoElement, this.bufferSize);
 
-                this.factory.getPlayer(this.src)
-                    .then(playerAdapter => {
-                        this.playerAdapter = playerAdapter;
-                        this.dispatchEvent(new CustomEvent('playerReady'));
-                    }, alert);
+                this.factory.getPlayer(this.src).then(playerAdapter => {
+                    this.playerAdapter = playerAdapter;
+                    this.dispatchEvent(new CustomEvent('playerReady'));
+
+                    if (this.subtitles) {
+                        this.subtitlesController = new SubtitlesController(this);
+                    }
+
+                    this.requestUpdate();
+                }, alert);
             } catch (err) {
                 console.error(err);
             }
@@ -34,8 +37,6 @@ class VideoPlayer extends LitElement {
             this.dispatchEvent(new CustomEvent('rendered'));
         }, 1);
     }
-
-    subtitlesController = new SubtitlesController(this);
 
     static get properties() {
         return {
@@ -50,16 +51,9 @@ class VideoPlayer extends LitElement {
     }
 
     render() {
-        return html`
-            <div id="video-wrapper">
-                <video id="video-player"></video>
-                ${controlsTemplate}
-                <div class="text-overlay">
-                   <slot></slot>
-                </div>
-            </div>
-        `;
+        return getPlayerTemplate(this);
     }
+
 }
 
 customElements.define('video-player', VideoPlayer);

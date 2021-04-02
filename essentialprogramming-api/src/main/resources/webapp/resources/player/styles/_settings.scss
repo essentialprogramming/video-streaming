@@ -1,0 +1,156 @@
+#settings-wrapper {
+    background: $bg-settings-wrapper;
+    bottom: 50px;
+    box-shadow: 0 0 14px 3px rgba(0, 0, 0, .25);
+    color: #FFF;
+    overflow: hidden;
+    position: absolute;
+    right: 60px;
+    transform: scale(0);
+    transform-origin: 100% 100%;
+    transition: .2s;
+    width: 160px;
+    z-index: 1;
+
+    &.open {
+        padding: 5px 0;
+        transform: scale(1);
+    }
+
+    &.main {
+        .main {
+            display: block;
+        }
+    }
+
+    &.quality {
+        .quality {
+            display: block;
+        }
+    }
+
+    &.speed {
+        .speed {
+            display: block;
+        }
+    }
+
+    &.subtitles {
+        .subtitles {
+            display: block;
+
+            & > * {
+                display: none;
+            }
+
+            &.subtitles-main {
+                .subtitles-main {
+                    display: block;
+                }
+            }
+
+            &.subtitles-style {
+                .subtitles-style {
+                    display: block;
+
+                    & > * {
+                        display: none;
+                    }
+
+                    &.subtitles-style-main {
+                        .subtitles-style-main {
+                            display: block;
+                        }
+                    }
+
+                    &.subtitles-style-size {
+                        .subtitles-style-size {
+                            display: block;
+                        }
+                    }
+
+                    &.subtitles-style-color {
+                        .subtitles-style-color {
+                            display: block;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    * {
+        transition: .4s;
+    }
+
+    & > * {
+        display: none;
+    }
+
+    .option {
+        align-items: center;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 10px;
+
+        &:hover {
+            background: $bg-settings-option;
+        }
+
+        &.back {
+            justify-content: flex-start;
+            margin-bottom: 10px;
+            padding: 0;
+
+            i {
+                transform: rotate(180deg);
+                margin-right: 5px;
+            }
+        }
+
+        i {
+            @include right-angle-icon($fill-expand-menu-icon);
+            cursor: pointer;
+            display: block;
+            height: 20px;
+            width: 20px;
+        }
+
+        &.switch {
+            &.on {
+                .switch {
+                    background: $bg-control-bar-inner;
+
+                    &::before {
+                        left: calc(100% - 14px);
+                    }
+                }
+            }
+
+            & > * {
+                pointer-events: none;
+            }
+
+            .switch {
+                background: $bg-control-bar;
+                border-radius: 8px;
+                height: 16px;
+                position: relative;
+                width: 36px;
+
+                &::before {
+                    content: '';
+                    background: $bg-control-bar-knob;
+                    border-radius: 50%;
+                    height: 12px;
+                    left: 2px;
+                    top: 2px;
+                    position: absolute;
+                    transition: .2s;
+                    width: 12px;
+                }
+            }
+        }
+    }
+}

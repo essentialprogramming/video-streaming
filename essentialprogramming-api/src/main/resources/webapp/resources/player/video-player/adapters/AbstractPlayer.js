@@ -44,6 +44,18 @@ export default class AbstractPlayer {
         this.settingsOpen = !this.settingsOpen;
     }
 
+    mute() {
+        throw new Error('You have to implement the method mute()!');
+    }
+
+    isMuted() {
+        throw new Error('You have to implement the method isMuted()!');
+    }
+
+    toggleMute() {
+        this.mute(!this.isMuted());
+    }
+
     getQualityOptions() {
         return false;
     }

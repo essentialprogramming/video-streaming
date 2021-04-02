@@ -1,102 +1,68 @@
 import AbstractPlayer from '../../adapters/AbstractPlayer';
-import QualityController from './Quality';
-import SpeedController from './Speed';
+import SubtitlesController from './subtitles/Subtitles';
 import Utils from '../../common/Utils';
 
 export default class Settings {
-    constructor(playerAdapter) {
-        this.playerAdapter = playerAdapter;
-        this.speedController = new SpeedController(playerAdapter);
-        this.qualityController = new QualityController(playerAdapter);
-    }
+    constructor(videoPlayer) {
+        this.videoPlayer = videoPlayer;
+        this.playerAdapter = this.videoPlayer.playerAdapter;
 
-    getElement() {
-        if (this.element) {
-            return this.element;
+        if (this.videoPlayer.subtitles) {
+            this.subtitlesController = new SubtitlesController(this.videoPlayer);
         }
 
-        this.element = document.createElement('div');
-        this.element.setAttribute('id', 'settings-wrapper');
-        Utils.setClass(this.element, 'main');
-
-        this.appendMainOptions();
-        this.appendQualityOptions();
-        this.appendSpeedOptions();
-
-        return this.element;
+        this.init().catch(error => console.log('Could not initialize settings, due to ' + error));
     }
 
-    appendMainOptions() {
-        this.mainOptionsWrapper = document.createElement('div');
-        Utils.setClass(this.mainOptionsWrapper, 'main');
+    async init() {
+        this.settingsWrapper = this.videoPlayer.shadowRoot.querySelector('#settings-wrapper');
+        this.initSettingsButton();
+        this.initMainOptions();
+    }
 
-        const speedOptionHandler = () => Utils.setClass(this.element, 'speed open', true);
-        const speedMainOption = this.speedController.getMainOption(speedOptionHandler);
-        this.mainOptionsWrapper.appendChild(speedMainOption);
+    initMainOptions() {
+        const speedOption = this.videoPlayer.shadowRoot.querySelector('#settings-wrapper > .main > .speed');
+        speedOption.addEventListener('click', () => Utils.setClass(this.settingsWrapper, 'speed open', true));
 
-        if (this.qualityController.qualityOptions) {
-            const qualityOptionHandler = () => Utils.setClass(this.element, 'quality open', true);
-            const qualityMainOption = this.qualityController.getMainOption(qualityOptionHandler);
-            this.mainOptionsWrapper.appendChild(qualityMainOption);
+        const qualityOption = this.videoPlayer.shadowRoot.querySelector('#settings-wrapper > .main > .quality');
+        qualityOption.addEventListener('click', () => Utils.setClass(this.settingsWrapper, 'quality open', true));
+
+        if (this.videoPlayer.subtitles) {
+            const subtitlesOption = this.videoPlayer.shadowRoot.querySelector('#settings-wrapper > .main > .subtitles');
+            subtitlesOption.addEventListener('click', () => Utils.setClass(this.settingsWrapper, 'subtitles open', true));
         }
 
-        this.element.appendChild(this.mainOptionsWrapper);
-    }
+        const hideControlsSwitch = this.videoPlayer.shadowRoot.querySelector('#settings-wrapper > .main > .hide-controls');
+        hideControlsSwitch.addEventListener('click', event => {
+            event.target.classList.toggle('on');
+            this.videoPlayer.classList.toggle('hide-controls');
+        });
 
-    appendQualityOptions() {
-        if (this.qualityController.qualityOptions) {
-            const qualityOptions = this.qualityController.getQualityOptions();
-            qualityOptions.prepend(this.renderBackBtn('Quality'));
-            this.element.appendChild(qualityOptions);
+        const backButtons = this.videoPlayer.shadowRoot.querySelectorAll('#settings-wrapper > * > .back');
+        for (let button of backButtons) {
+            button.addEventListener('click', () => Utils.setClass(this.settingsWrapper, 'main open', true));
         }
     }
 
-    appendSpeedOptions() {
-        const speedOptions = this.speedController.getSpeedOptions();
-        speedOptions.prepend(this.renderBackBtn('Speed'));
-        this.element.appendChild(speedOptions);
-    }
-
-    renderBackBtn(label) {
-        const button = document.createElement('div');
-        Utils.setClass(button, 'option back');
-        button.addEventListener('click', () => Utils.setClass(this.element, 'main open', true));
-
-        const icon = document.createElement('i');
-        button.appendChild(icon);
-
-        const btnLabel = document.createElement('div');
-        btnLabel.textContent = label;
-        button.appendChild(btnLabel);
-
-        return button;
-    }
-
-    getSettingsButton() {
-        if (this.settingsButton) {
-            return this.settingsButton;
-        }
-
-        this.settingsButton = document.createElement('i');
-        this.addButtonEventListeners();
-
-        return this.settingsButton;
-    }
-
-    addButtonEventListeners() {
-        this.settingsButton.addEventListener('click', event => {
+    initSettingsButton() {
+        const settingsButton = this.videoPlayer.shadowRoot.querySelector('#settings-btn');
+        settingsButton.addEventListener('click', event => {
             this.playerAdapter.toggleSettings();
 
             if (this.playerAdapter.settingsOpen) {
-                Utils.setClass(this.settingsButton, 'open');
-                Utils.setClass(this.element, 'open');
+                Utils.setClass(settingsButton, 'open');
+                Utils.setClass(this.settingsWrapper, 'open');
+                Utils.setClass(this.videoPlayer, 'settings-open');
             } else {
-                this.settingsButton.classList.remove('open');
-                Utils.setClass(this.element, 'main', true);
+                settingsButton.classList.remove('open');
+                Utils.setClass(this.settingsWrapper, 'main', true);
+                this.videoPlayer.classList.remove('settings-open');
+                Utils.setClass(this.videoPlayer.shadowRoot.querySelector('#settings-wrapper > .subtitles'), 'subtitles subtitles-main', true);
+                Utils.setClass(this.videoPlayer.shadowRoot.querySelector('#settings-wrapper > .subtitles > .subtitles-style'), 'subtitles-style subtitles-style-main', true);
             }
         });
 
-        this.playerAdapter.addEventListener(AbstractPlayer.EVENT_QUALITY_CHANGE_REQUESTED, () => Utils.setClass(this.settingsButton, 'quality-changing'));
-        this.playerAdapter.addEventListener(AbstractPlayer.EVENT_QUALITY_CHANGE_RENDERED, () => this.settingsButton.classList.remove('quality-changing'));
+        this.playerAdapter.addEventListener(AbstractPlayer.EVENT_QUALITY_CHANGE_REQUESTED, () => Utils.setClass(settingsButton, 'quality-changing'));
+        this.playerAdapter.addEventListener(AbstractPlayer.EVENT_QUALITY_CHANGE_RENDERED, () => settingsButton.classList.remove('quality-changing'));
     }
 }

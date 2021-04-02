@@ -1,28 +1,24 @@
 import AbstractPlayer from '../adapters/AbstractPlayer.js';
 export default class Time {
-    constructor(playerAdapter) {
-        this.player = playerAdapter;
+    constructor(videoPlayer) {
+        this.videoPlayer = videoPlayer;
+        this.playerAdapter = this.videoPlayer.playerAdapter;
         this.duration = formatTime(0);
+        this.init().catch(error => console.log('Could not initialize timer due to ' + error));
     }
 
-    getElement() {
-        if (this.element) {
-            return this.element;
-        }
+    async init() {
+        this.timer = this.videoPlayer.shadowRoot.getElementById('timer');
 
-        this.element = document.createTextNode('');
-
-        this.player.addEventListener(AbstractPlayer.EVENT_LOADED_METADATA, () => {
-            this.duration = formatTime(this.player.getDuration());
-            this.element.textContent = `0:00/${this.duration}`;
+        this.playerAdapter.addEventListener(AbstractPlayer.EVENT_LOADED_METADATA, () => {
+            this.duration = formatTime(this.playerAdapter.getDuration());
+            this.timer.textContent = `0:00/${this.duration}`;
         });
 
-        this.player.addEventListener(AbstractPlayer.EVENT_TIMEUPDATE, (e) => {
-            const elapsed = formatTime(this.player.getCurrentTime());
-            this.element.textContent = `${elapsed}/${this.duration}`;
+        this.playerAdapter.addEventListener(AbstractPlayer.EVENT_TIMEUPDATE, (e) => {
+            const elapsed = formatTime(this.playerAdapter.getCurrentTime());
+            this.timer.textContent = `${elapsed}/${this.duration}`;
         });
-
-        return this.element;
     }
 }
 

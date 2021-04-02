@@ -1,0 +1,87 @@
+@import './colors';
+
+:host(.interacting),
+:host(.settings-open),
+:host(:not(.hide-controls)) {
+    #subtitles-wrapper {
+        bottom: 48px;
+    }
+}
+
+#subtitles-wrapper {
+    align-items: center;
+    bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    position: absolute;
+    transition: .3s;
+    width: 100%;
+
+    &.smallest {
+        .cue {
+            font-size: 12px;
+        }
+    }
+
+    &.small {
+        .cue {
+            font-size: 17px;
+        }
+    }
+
+    &.normal {
+        .cue {
+            font-size: 22px;
+        }
+    }
+
+    &.large {
+        .cue {
+            font-size: 27px;
+        }
+    }
+
+    &.largest {
+        .cue {
+            font-size: 32px;
+        }
+    }
+
+    &.color-black {
+        .cue {
+            color: #000;
+        }
+    }
+
+    &.color-white {
+        .cue {
+            color: #FFF;
+        }
+    }
+
+    &.color-yellow {
+        .cue {
+            color: #FD0;
+        }
+    }
+
+    &.color-red {
+        .cue {
+            color: #F00;
+        }
+    }
+
+    &.color-blue {
+        .cue {
+            color: #00F;
+        }
+    }
+
+    .cue {
+        background: $bg-subtitles;
+        color: $color-subtitles;
+        font-size: 22px;
+        padding: 0 5px;
+    }
+}
