@@ -1,4 +1,5 @@
 @import './colors';
+@import './breakpoints';
 
 :host(.interacting),
 :host(.settings-open),
@@ -12,25 +13,47 @@
     align-content: center;
     background: $bg-controls-wrapper;
     box-sizing: border-box;
-    bottom: -48px;
+    bottom: -41px;
     display: flex;
-    height: 44px;
+    height: 36px;
     justify-content: space-between;
     left: 0;
-    padding: 14px 0 10px;
+    padding: 12px 0 8px;
     position: absolute;
     transition: .3s;
     width: 100%;
     z-index: 3;
 
+    @media screen and (min-width: $lg-min) {
+        bottom: -47px;
+        height: 42px;
+        padding: 14px 0 10px;
+    }
+
+    @media screen and (min-width: $xl-min) {
+        bottom: -52px;
+        height: 48px;
+        padding: 16px 0 12px;
+    }
+
     #seek-bar {
         cursor: pointer;
-        height: 20px;
+        height: 30px;
         left: 0;
         margin: 0 10px;
         position: absolute;
-        top: -8px;
+        top: -13px;
         width: calc(100% - 20px);
+
+        @media screen and (min-width: $lg-min) {
+            height: 26px;
+            top: -11px;
+        }
+
+        @media screen and (min-width: $xl-min) {
+            height: 20px;
+            top: -8px;
+        }
     }
 
     .left,
@@ -41,14 +64,32 @@
 
     .left {
         #play-btn {
-            margin: 0 20px;
+            margin: 0 16px;
+
+            @media screen and (min-width: $lg-min) {
+                margin: 0 18px;
+            }
+
+            @media screen and (min-width: $xl-min) {
+                margin: 0 20px;
+            }
 
             i {
                 @include play-icon($fill-play-btn);
                 cursor: pointer;
                 display: block;
-                height: 20px;
-                width: 20px;
+                height: 16px;
+                width: 16px;
+
+                @media screen and (min-width: $lg-min) {
+                    height: 18px;
+                    width: 18px;
+                }
+
+                @media screen and (min-width: $xl-min) {
+                    height: 20px;
+                    width: 20px;
+                }
 
                 &.pause {
                     @include pause-icon($fill-pause-btn);
@@ -57,8 +98,12 @@
         }
 
         #volume-wrapper {
-            display: flex;
+            display: none;
             padding-right: 20px;
+
+            @media screen and (min-width: $xl-min) {
+                display: block;
+            }
 
             &.open,
             &:hover {
@@ -92,11 +137,48 @@
 
         #timer {
             color: #FFF;
+            font-size: 16px;
+            line-height: 16px;
+
+            @media screen and (min-width: $xl-min) {
+                font-size: 14px;
+                line-height: 20px;
+            }
         }
     }
 
     .right {
+        #snapshot-btn {
+            i {
+                @include camera-icon($fill-settings-btn);
+                cursor: pointer;
+                display: block;
+                height: 16px;
+                width: 16px;
+
+                @media screen and (min-width: $lg-min) {
+                    height: 18px;
+                    width: 18px;
+                }
+
+                @media screen and (min-width: $xl-min) {
+                    height: 20px;
+                    width: 20px;
+                }
+            }
+        }
+
         #settings-btn {
+            margin-left: 16px;
+
+            @media screen and (min-width: $lg-min) {
+                margin-left: 18px;
+            }
+
+            @media screen and (min-width: $xl-min) {
+                margin-left: 20px;
+            }
+
             &.open {
                 i {
                     transform: rotate(-60deg);
@@ -113,14 +195,32 @@
                 @include settings-icon($fill-settings-btn);
                 cursor: pointer;
                 display: block;
-                height: 20px;
-                width: 20px;
+                height: 16px;
+                width: 16px;
                 transition: .2s;
+
+                @media screen and (min-width: $lg-min) {
+                    height: 18px;
+                    width: 18px;
+                }
+
+                @media screen and (min-width: $xl-min) {
+                    height: 20px;
+                    width: 20px;
+                }
             }
         }
 
         #fullscreen-btn {
-            margin: 0 20px;
+            margin: 0 16px;
+
+            @media screen and (min-width: $lg-min) {
+                margin: 0 18px;
+            }
+
+            @media screen and (min-width: $xl-min) {
+                margin: 0 20px;
+            }
 
             &.compress {
                 i {
@@ -132,8 +232,18 @@
                 @include expand-icon($fill-fullscreen-btn);
                 cursor: pointer;
                 display: block;
-                height: 20px;
-                width: 20px;
+                height: 16px;
+                width: 16px;
+
+                @media screen and (min-width: $lg-min) {
+                    height: 18px;
+                    width: 18px;
+                }
+
+                @media screen and (min-width: $xl-min) {
+                    height: 20px;
+                    width: 20px;
+                }
             }
         }
     }

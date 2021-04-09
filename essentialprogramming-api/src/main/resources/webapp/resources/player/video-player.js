@@ -16,8 +16,8 @@ class VideoPlayer extends LitElement {
             try {
                 await this.updateComplete;
                 this.videoElement = this.shadowRoot.getElementById('video-player');
-                this.factory.registerPlayers(this.videoElement, this.bufferSize);
 
+                this.factory.registerPlayers(this.videoElement, this.bufferSize);
                 this.factory.getPlayer(this.src).then(playerAdapter => {
                     this.playerAdapter = playerAdapter;
                     this.dispatchEvent(new CustomEvent('playerReady'));
@@ -32,6 +32,12 @@ class VideoPlayer extends LitElement {
                 console.error(err);
             }
         });
+
+        this.addEventListener('playerReady', () => {
+            this.playOverlay = this.shadowRoot.getElementById('play-overlay');
+            this.playOverlay.classList.remove('hide')
+        });
+
 
         setTimeout(() => {
             this.dispatchEvent(new CustomEvent('rendered'));

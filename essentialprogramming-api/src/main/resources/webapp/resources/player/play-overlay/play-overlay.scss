@@ -1,0 +1,214 @@
+@import '../styles/breakpoints';
+
+@function str-replace($string, $search, $replace: '') {
+    $index: str-index($string, $search);
+
+    @if $index {
+        @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    }
+
+    @return $string;
+}
+
+@mixin play-icon($fill) {
+    background: url('data:image/svg+xml;utf8,<svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="' + str-replace($fill, '#', '%23') + '" d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"></path></svg>') no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+
+
+.play-overlay {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+
+
+    &:hover {
+        cursor: pointer;
+
+        .button {
+            transform: scale(1.1);
+        }
+    }
+
+    .text-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .primary {
+            font-size: 18px;
+            font-weight: bold;
+
+            @media screen and (min-width: $md-min) {
+                font-size: 26px;
+            }
+
+            @media screen and (min-width: $lg-min) {
+                font-size: 42px;
+            }
+        }
+
+        .secondary {
+            font-size: 14px;
+            font-weight: bold;
+
+            @media screen and (min-width: $md-min) {
+                font-size: 18px;
+            }
+
+            @media screen and (min-width: $lg-min) {
+                font-size: 25px;
+            }
+        }
+    }
+
+    .button {
+        padding: 0 10px;
+        position: relative;
+        margin-top: 10px;
+        width: max-content;
+        transition: .3s;
+
+        @media screen and (min-width: $md-min) {
+            margin-top: 20px;
+            padding: 0 15px;
+        }
+
+        @media screen and (min-width: $lg-min) {
+            margin-top: 30px;
+            padding: 0 25px;
+        }
+
+        i {
+            @include play-icon('#FFF');
+            display: block;
+            height: 10px;
+            margin: 0 auto;
+            position: relative;
+            width: 10px;
+            z-index: 1;
+
+            @media screen and (min-width: $md-min) {
+                width: 12px;
+                height: 12px;
+            }
+
+            @media screen and (min-width: $lg-min) {
+                height: 16px;
+                width: 16px;
+            }
+        }
+
+        .label {
+            font-size: 10px;
+            line-height: 1;
+            margin-top: 4px;
+            position: relative;
+            z-index: 1;
+
+            @media screen and (min-width: $md-min) {
+                font-size: 12px;
+                margin-top: 6px;
+            }
+
+            @media screen and (min-width: $lg-min) {
+                font-size: 16px;
+                margin-top: 8px;
+            }
+        }
+
+        .background {
+            border-radius: 50%;
+            height: 0;
+            left: 0;
+            padding-bottom: 100%;
+            position: absolute;
+            top: 0;
+            transform: translateY(calc(12px - 50%));
+            width: 100%;
+
+            @media screen and (min-width: $md-min) {
+                transform: translateY(calc(15px - 50%));
+            }
+
+            @media screen and (min-width: $lg-min) {
+                transform: translateY(calc(20px - 50%));
+            }
+        }
+    }
+}
+
+:host(.alt) {
+    display: flex;
+    align-items: flex-end;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+
+    .play-overlay {
+        flex-direction: row;
+        height: unset;
+        justify-content: space-evenly;
+        padding: 0 50px 10px;
+
+        .text-wrapper {
+            align-items: flex-start;
+            margin-right: 15%;
+
+            .primary {
+                font-size: 16px;
+                line-height: 1;
+
+                @media screen and (min-width: $md-min) {
+                    font-size: 26px;
+                }
+
+                @media screen and (min-width: $lg-min) {
+                    font-size: 42px;
+                }
+            }
+
+            .secondary {
+                font-size: 12px;
+                line-height: 1;
+                font-weight: 300;
+                width: max-content;
+
+                @media screen and (min-width: $md-min) {
+                    font-size: 18px;
+                }
+
+                @media screen and (min-width: $lg-min) {
+                    font-size: 25px;
+                }
+            }
+        }
+
+        .button {
+            align-items: center;
+            border-radius: 3px;
+            display: flex;
+            margin: unset;
+            padding: 8px 15px;
+            position: relative;
+            transition: .3s;
+
+            i {
+                margin-right: 5px;
+            }
+
+            .label {
+                margin-top: 0;
+            }
+
+            .background {
+                display: none;
+            }
+        }
+    }
+}

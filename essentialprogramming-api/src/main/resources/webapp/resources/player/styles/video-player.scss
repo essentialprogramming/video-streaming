@@ -11,8 +11,17 @@
 :host(.settings-open),
 :host(:not(.hide-controls)) {
     #video-wrapper {
-        #overlay {
-            height: calc(100% - 48px);
+        #overlay,
+        #play-overlay {
+            height: calc(100% - 36px);
+
+            @media screen and (min-width: $lg-min) {
+                height: calc(100% - 42px);
+            }
+
+            @media screen and (min-width: $xl-min) {
+                height: calc(100% - 48px);
+            }
         }
     }
 }
@@ -39,6 +48,7 @@
         height: 100%;
         pointer-events: none;
         transition: .3s;
+        z-index: 1;
 
         ::slotted(.top) {
             grid-row: 1 / 2;
@@ -62,6 +72,26 @@
 
         ::slotted(.right) {
             grid-column: 3 / 4;
+        }
+
+        ::slotted(.whole) {
+            grid-column: 1 / 4;
+            grid-row: 1 / 4;
+        }
+    }
+
+    #play-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    #overlay,
+    #play-overlay {
+        &.hide {
+            display: none;
         }
     }
 }

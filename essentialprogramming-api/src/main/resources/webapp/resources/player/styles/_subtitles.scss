@@ -17,6 +17,7 @@
     position: absolute;
     transition: .3s;
     width: 100%;
+    z-index: 2;
 
     &.smallest {
         .cue {
@@ -83,5 +84,6 @@
         color: $color-subtitles;
         font-size: 22px;
         padding: 0 5px;
+        text-align: center;
     }
 }

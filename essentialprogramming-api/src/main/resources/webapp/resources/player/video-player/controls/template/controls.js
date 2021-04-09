@@ -16,6 +16,9 @@ export function getControlsTemplate(videoPlayer) {
                 <div id="timer"></div>
             </div>
             <div class="right">
+                <div id="snapshot-btn">
+                    <i></i>
+                </div>
                 <div id="settings-btn">
                     <i></i>
                 </div>

@@ -14,7 +14,7 @@ export function renderQualityOptions(videoPlayer) {
         <div class="quality">
             <div class="option back">
                 <i></i>
-                <div>Quality</div>
+                <div class="label">Quality</div>
             </div>
             ${qualityOptions}
         </div>

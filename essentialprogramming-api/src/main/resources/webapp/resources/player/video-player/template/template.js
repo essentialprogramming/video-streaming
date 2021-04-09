@@ -7,8 +7,11 @@ export default function getPlayerTemplate(videoPlayer) {
             <video id="video-player"></video>
             ${getControlsTemplate(videoPlayer)}
             <div id="subtitles-wrapper"></div>
-            <div id="overlay">
+            <div id="overlay" class="hide">
                 <slot></slot>
+            </div>
+            <div id="play-overlay" class="hide">
+                <slot name="play-overlay"></slot>
             </div>
         </div>
     `

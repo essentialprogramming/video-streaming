@@ -1,10 +1,12 @@
 import PlayController from './Play';
 import VolumeController from './Volume';
 import TimerController from './Time.js';
+import SnapshotController from './Snapshot';
 import SettingsController from './settings/Settings';
 import FullScreenController from './Fullscreen';
 import SeekbarController from './SeekBar';
 import Utils from '../common/Utils';
+import AbstractPlayer from '../adapters/AbstractPlayer';
 
 export default class Controls {
     constructor(videoPlayer) {
@@ -21,6 +23,7 @@ export default class Controls {
         await this.initPlayButton();
         await this.initVolumeControls();
         await this.initTimer();
+        await this.initSnapshotButton();
         await this.initSettings();
         await this.initFullScreenButton();
         await this.initSeekBar();
@@ -38,6 +41,10 @@ export default class Controls {
 
     async initTimer() {
         this.timerController = new TimerController(this.videoPlayer);
+    }
+
+    async initSnapshotButton() {
+        this.snapshotController = new SnapshotController(this.videoPlayer);
     }
 
     async initSettings() {
@@ -61,5 +68,10 @@ export default class Controls {
         this.videoPlayer.addEventListener('mouseleave', () => {
             closeControlsTimeout = setTimeout(() => this.videoPlayer.classList.remove('interacting'), 4000);
         });
+
+        const overlay = this.videoPlayer.shadowRoot.getElementById('overlay');
+        this.playerAdapter.addEventListener(AbstractPlayer.EVENT_PLAYED, () => this.videoPlayer.playOverlay.classList.add('hide'));
+        this.videoPlayer.playOverlay.addEventListener('click', () => this.playerAdapter.play());
+        this.playerAdapter.addEventListener(AbstractPlayer.EVENT_PLAYED, () => overlay.classList.remove('hide'));
     }
 }

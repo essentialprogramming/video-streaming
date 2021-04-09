@@ -25,6 +25,5 @@ export default class Play {
 
     async getElement() {
         return await this.playButton;
-
     }
 }

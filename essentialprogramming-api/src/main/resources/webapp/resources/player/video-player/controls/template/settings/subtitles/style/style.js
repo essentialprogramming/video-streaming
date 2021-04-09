@@ -6,14 +6,14 @@ const mainOptions = html`
     <div class="subtitles-style-main">
         <div class="option back">
             <i></i>
-            <div>Style</div>
+            <div class="label">Style</div>
         </div>
         <div class="option size">
-            <div>Font size</div>
+            <div class="label">Font size</div>
             <i class="expand"></i>
         </div>
         <div class="option color">
-            <div>Color</div>
+            <div class="label">Color</div>
             <i class="expand"></i>
         </div>
     </div>

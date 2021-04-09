@@ -13,7 +13,7 @@ export function renderSpeedOptions(videoPlayer) {
         <div class="speed">
             <div class="option back">
                 <i></i>
-                <div>Speed</div>
+                <div class="label">Speed</div>
             </div>
             ${speedOptions}
         </div>

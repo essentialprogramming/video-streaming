@@ -10,17 +10,17 @@ export function getSettingsTemplate(videoPlayer) {
         <div id="settings-wrapper" class="main">
             <div class="main">
                 <div class="option speed">
-                    <div>Speed</div>
+                    <div class="label">Speed</div>
                     <i class="expand"></i>
                 </div>
                 <div class="option quality">
-                    <div>Quality</div>
+                    <div class="label">Quality</div>
                     <i class="expand "></i>
                 </div>
                 ${!videoPlayer.subtitles ? null :
                     html`
                         <div class="option subtitles">
-                            <div>Subtitles</div>
+                            <div class="label">Subtitles</div>
                             <i class="expand"></i>
                         </div>
                     `}
@@ -42,7 +42,7 @@ export function renderOption(name, handler = false, expand = false) {
 
     return html`
         <div class="option" @click="${handler}">
-            <div>${name}</div>
+            <div class="label">${name}</div>
             ${expandIcon}
         </div>
     `;
