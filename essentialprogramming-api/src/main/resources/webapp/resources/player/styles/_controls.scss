@@ -64,7 +64,11 @@
 
     .left {
         #play-btn {
-            margin: 0 16px;
+            margin: 0 10px;
+
+            @media screen and (min-width: $sm-min) {
+                margin: 0 16px;
+            }
 
             @media screen and (min-width: $lg-min) {
                 margin: 0 18px;
@@ -98,19 +102,18 @@
         }
 
         #volume-wrapper {
-            display: none;
+            display: flex;
+            align-items: center;
             padding-right: 20px;
-
-            @media screen and (min-width: $xl-min) {
-                display: block;
-            }
 
             &.open,
             &:hover {
                 #volume-bar {
-                    --knob-size: 12px;
-                    margin-left: 20px;
-                    width: 100px;
+                    @media screen and (min-width: $xl-min) {
+                        --knob-size: 12px;
+                        margin-left: 20px;
+                        width: 100px;
+                    }
                 }
             }
 
@@ -118,8 +121,18 @@
                 @include volume-up-icon($fill-mute-btn);
                 cursor: pointer;
                 display: block;
-                height: 20px;
-                width: 20px;
+                height: 16px;
+                width: 16px;
+
+                @media screen and (min-width: $lg-min) {
+                    height: 18px;
+                    width: 18px;
+                }
+
+                @media screen and (min-width: $xl-min) {
+                    height: 20px;
+                    width: 20px;
+                }
 
                 &.muted {
                     @include muted-icon($fill-mute-btn);
@@ -127,21 +140,41 @@
             }
 
             #volume-bar {
-                --knob-size: 0px;
+                --knob-size: 12px;
                 cursor: pointer;
                 height: 20px;
-                width: 0px;
+                margin-left: 10px;
                 transition: .5s;
+                width: 40px;
+
+                @media screen and (min-width: $sm-min) {
+                    margin-left: 15px;
+                    width: 60px;
+                }
+
+                @media screen and (min-width: $md-min) {
+                    --knob-size: 12px;
+                    margin-left: 20px;
+                    width: 80px;
+                }
+
+                @media screen and (min-width: $xl-min) {
+                    --knob-size: 0px;
+                    width: 0;
+                }
             }
         }
 
         #timer {
             color: #FFF;
-            font-size: 16px;
+            font-size: 14px;
             line-height: 16px;
 
+            @media screen and (min-width: $lg-min) {
+                line-height: 18px;
+            }
+
             @media screen and (min-width: $xl-min) {
-                font-size: 14px;
                 line-height: 20px;
             }
         }
@@ -169,7 +202,11 @@
         }
 
         #settings-btn {
-            margin-left: 16px;
+            margin-left: 10px;
+
+            @media screen and (min-width: $sm-min) {
+                margin-left: 16px;
+            }
 
             @media screen and (min-width: $lg-min) {
                 margin-left: 18px;
@@ -212,7 +249,11 @@
         }
 
         #fullscreen-btn {
-            margin: 0 16px;
+            margin: 0 10px;
+
+            @media screen and (min-width: $sm-min) {
+                margin: 0 16px;
+            }
 
             @media screen and (min-width: $lg-min) {
                 margin: 0 18px;

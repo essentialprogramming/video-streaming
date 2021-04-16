@@ -33,15 +33,14 @@ class VideoPlayer extends LitElement {
             }
         });
 
-        this.addEventListener('playerReady', () => {
-            this.playOverlay = this.shadowRoot.getElementById('play-overlay');
-            this.playOverlay.classList.remove('hide')
-        });
-
-
         setTimeout(() => {
             this.dispatchEvent(new CustomEvent('rendered'));
         }, 1);
+    }
+
+    firstUpdated() {
+        this.playOverlay = this.shadowRoot.getElementById('play-overlay');
+        this.playOverlay.classList.remove('hide');
     }
 
     static get properties() {

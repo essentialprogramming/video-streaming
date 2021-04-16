@@ -30,7 +30,8 @@ public class ResponseHandler implements EventHandler<StreamFragment> {
     private void writeFragment(String fileType, Range range, byte[] data, AsyncContext asyncContext) {
         try (ServletOutputStream outputStream = asyncContext.getResponse().getOutputStream()) {
             final HttpServletResponse servletResponse = (HttpServletResponse) asyncContext.getResponse();
-            ResponseHandler.setResponseHeaders(fileType, range, servletResponse);
+            this.setResponseHeaders(fileType, range, servletResponse);
+            this.setCorsHeaders(servletResponse);
 
             outputStream.write(data, 0, data.length);
             outputStream.flush();
@@ -41,7 +42,7 @@ public class ResponseHandler implements EventHandler<StreamFragment> {
 
     }
 
-    private static void setResponseHeaders(String fileType, Range range, HttpServletResponse response) {
+    private void setResponseHeaders(String fileType, Range range, HttpServletResponse response) {
         final String contentLength = String.valueOf(range.length);
 
         response.setStatus(Response.Status.PARTIAL_CONTENT.getStatusCode());
@@ -49,5 +50,12 @@ public class ResponseHandler implements EventHandler<StreamFragment> {
         response.setHeader(ACCEPT_RANGES, BYTES);
         response.setHeader(CONTENT_LENGTH, contentLength);
         response.setHeader(CONTENT_RANGE, BYTES + " " + range.start + "-" + range.end + "/" + range.total);
+    }
+
+    private void setCorsHeaders( HttpServletResponse response){
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Headers", "origin, content-type, accept, authorization,  X-Requested-With, Content-Length");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
     }
 }
