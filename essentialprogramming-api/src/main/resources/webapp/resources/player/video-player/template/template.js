@@ -4,7 +4,7 @@ import { getControlsTemplate } from '../controls/template/controls';
 export default function getPlayerTemplate(videoPlayer) {
     return html`
         <div id="video-wrapper">
-            <video id="video-player"></video>
+            <video id="video-player" crossorigin="anonymous"></video>
             ${getControlsTemplate(videoPlayer)}
             <div id="subtitles-wrapper"></div>
             <div id="overlay" class="hide">
