@@ -2,10 +2,9 @@ video {
   width: 100%;
 }
 
-/* Space out content a bit */
-body {
-  padding-top: 20px;
-  padding-bottom: 20px;
+html, body {
+  width: 100%;
+  height: 100%;
 }
 
 .header,
@@ -71,6 +70,46 @@ video-player .logo {
   right: 10px;
   height: 60px;
 }
+
+.thumbnails-grid {
+  align-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  padding: 0 10px;
+  width: 100%;
+  max-width: 1070px;
+}
+
+@media screen and (min-width: 576px) {
+  .thumbnails-grid {
+    grid-gap: 15px;
+    margin: 0 auto;
+    width: 90%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .thumbnails-grid {
+    grid-gap: 20px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .thumbnails-grid {
+    grid-gap: 30px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .thumbnails-grid {
+    grid-gap: 50px;
+  }
+}
+
 
 
 

@@ -10,6 +10,9 @@ export default class Fullscreen {
         this.element = this.videoPlayer.shadowRoot.querySelector("#fullscreen-btn");
         this.videoPlayer.videoElement.addEventListener('dblclick', () => Utils.toggleFullScreen(this.videoPlayer));
         this.element.addEventListener('click', () => Utils.toggleFullScreen(this.videoPlayer));
+        const playOverlay = this.videoPlayer.shadowRoot.getElementById('play-overlay');
+        playOverlay.addEventListener('dblclick', () => Utils.toggleFullScreen(this.videoPlayer));
+
         document.addEventListener('fullscreenchange', () => {
             if (Utils.isDocumentInFullScreenMode()) {
                 Utils.setClass(this.element, 'compress');

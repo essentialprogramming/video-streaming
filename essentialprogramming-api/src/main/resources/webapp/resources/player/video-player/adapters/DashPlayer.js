@@ -34,14 +34,17 @@ export default class DashPlayer extends AbstractPlayer {
                 Object.defineProperty(DashPlayer, AbstractPlayer.EVENT_PAUSED, {value: dashjs.MediaPlayer.events.PLAYBACK_PAUSED});
                 Object.defineProperty(DashPlayer, AbstractPlayer.EVENT_SEEK, {value: dashjs.MediaPlayer.events.PLAYBACK_SEEK_ASKED});
                 Object.defineProperty(DashPlayer, AbstractPlayer.EVENT_LOADED_METADATA, {value: dashjs.MediaPlayer.events.PLAYBACK_METADATA_LOADED});
-                Object.defineProperty(DashPlayer, AbstractPlayer.EVENT_VOLUME_CHANGE, {
-                    value: {
-                        name: 'volumechange',
-                        onVideoElement: true
-                    }
-                });
+                //Object.defineProperty(DashPlayer, AbstractPlayer.EVENT_VOLUME_CHANGE, {
+                //    value: {
+                //        name: 'volumechange',
+                //        onVideoElement: true
+                //    }
+                //});
                 Object.defineProperty(DashPlayer, AbstractPlayer.EVENT_QUALITY_CHANGE_REQUESTED, {value: dashjs.MediaPlayer.events.QUALITY_CHANGE_REQUESTED});
                 Object.defineProperty(DashPlayer, AbstractPlayer.EVENT_QUALITY_CHANGE_RENDERED, {value: dashjs.MediaPlayer.events.QUALITY_CHANGE_RENDERED});
+
+
+
             });
         });
     }
@@ -49,7 +52,6 @@ export default class DashPlayer extends AbstractPlayer {
     canPlay(url) {
         return /\.mpd$/i.test(url);
     }
-
 
     isPaused() {
         return this.player.isPaused();

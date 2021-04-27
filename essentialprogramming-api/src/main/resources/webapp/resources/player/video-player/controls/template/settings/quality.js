@@ -10,13 +10,14 @@ export function renderQualityOptions(videoPlayer) {
         Collections.removeDuplicates(playerAdapter.getQualityOptions())
             .map(option => renderOption(Utils.getQualityLabels(option.name), () => playerAdapter.setQuality(option.value)))
 
-    return html`
-        <div class="quality">
-            <div class="option back">
-                <i></i>
-                <div class="label">Quality</div>
+    return !qualityOptions ? null :
+        html`
+            <div class="quality">
+                <div class="option back">
+                    <i></i>
+                    <div class="label">Quality</div>
+                </div>
+                ${qualityOptions}
             </div>
-            ${qualityOptions}
-        </div>
-    `;
+        `;
 }

@@ -11,7 +11,9 @@ export default class Play {
 
     async init() {
         let element = this.root.querySelector("#play-btn > i:first-of-type");
-        element.addEventListener('click', () => this.player.toggle());
+        element.addEventListener('click', () => {
+            this.player.toggle();
+        });
 
         this.player.addEventListener(AbstractPlayer.EVENT_PAUSED, () => {
             Utils.setClass(element, 'play', true);

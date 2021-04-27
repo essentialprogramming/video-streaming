@@ -1,0 +1,47 @@
+@import '../styles/breakpoints';
+
+:host {
+    background: black;
+    border-radius: 10px;
+    position: relative;
+    height: 0;
+    overflow:hidden;
+    padding-top: 56.25%;
+
+    video {
+        display: block;
+        height: 100%;
+        left: 0;
+        margin: 0 auto;
+        max-height: 100vh;
+        max-width: calc(100vw - 30px);
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
+
+    ::slotted(play-overlay) {
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        --button-padding: 5px 8px;
+        --overlay-padding: 0 8px 10px;
+        --primary-font-size: 12px;
+        --secondary-font-size: 10px;
+
+        @media screen and (min-width: $md-min) {
+            --button-padding: 8px 15px;
+            --overlay-padding: 0 15px 15px;
+            --primary-font-size: 14px;
+            --secondary-font-size: 12px;
+        }
+
+        @media screen and (min-width: $lg-min) {
+            --overlay-padding: 0 30px 20px;
+            --primary-font-size: 16px;
+            --secondary-font-size: 14px;
+        }
+    }
+}

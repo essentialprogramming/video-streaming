@@ -13,6 +13,7 @@ export default function getPlayerTemplate(videoPlayer) {
             <div id="play-overlay" class="hide">
                 <slot name="play-overlay"></slot>
             </div>
+            <slot name="pop-up"></slot>
         </div>
     `
 }

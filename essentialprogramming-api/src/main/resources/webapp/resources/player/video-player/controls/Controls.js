@@ -10,10 +10,13 @@ import AbstractPlayer from '../adapters/AbstractPlayer';
 
 export default class Controls {
     constructor(videoPlayer) {
+        this.initialised = false;
         this.videoPlayer = videoPlayer;
         this.videoPlayer.addEventListener('playerReady', async () => {
             this.playerAdapter = this.videoPlayer.playerAdapter;
-            await this.init().catch(error => console.log("Could not initialize Controls, due to " + error))
+            if (!this.initialised) {
+                await this.init().catch(error => console.log("Could not initialize Controls, due to " + error));
+            }
         });
     }
 
@@ -28,6 +31,7 @@ export default class Controls {
         await this.initFullScreenButton();
         await this.initSeekBar();
         await this.addListeners();
+        this.initialised = true;
     }
 
     async initPlayButton() {
@@ -70,6 +74,7 @@ export default class Controls {
         });
 
         const overlay = this.videoPlayer.shadowRoot.getElementById('overlay');
+        overlay.addEventListener('click', () => this.playerAdapter.toggle());
         this.playerAdapter.addEventListener(AbstractPlayer.EVENT_PLAYED, () => this.videoPlayer.playOverlay.classList.add('hide'));
         this.videoPlayer.playOverlay.addEventListener('click', () => this.playerAdapter.play());
         this.playerAdapter.addEventListener(AbstractPlayer.EVENT_PLAYED, () => overlay.classList.remove('hide'));

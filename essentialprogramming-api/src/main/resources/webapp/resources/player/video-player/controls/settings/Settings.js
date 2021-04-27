@@ -5,16 +5,15 @@ import Utils from '../../common/Utils';
 export default class Settings {
     constructor(videoPlayer) {
         this.videoPlayer = videoPlayer;
-        this.playerAdapter = this.videoPlayer.playerAdapter;
-
-        if (this.videoPlayer.subtitles) {
-            this.subtitlesController = new SubtitlesController(this.videoPlayer);
-        }
-
         this.init().catch(error => console.log('Could not initialize settings, due to ' + error));
     }
 
     async init() {
+        if (this.videoPlayer.subtitles) {
+            this.subtitlesController = new SubtitlesController(this.videoPlayer);
+        }
+        this.playerAdapter = this.videoPlayer.playerAdapter;
+        this.qualityOptions = this.playerAdapter.getQualityOptions();
         this.settingsWrapper = this.videoPlayer.shadowRoot.querySelector('#settings-wrapper');
         this.initSettingsButton();
         this.initMainOptions();
@@ -25,7 +24,11 @@ export default class Settings {
         speedOption.addEventListener('click', () => Utils.setClass(this.settingsWrapper, 'speed open', true));
 
         const qualityOption = this.videoPlayer.shadowRoot.querySelector('#settings-wrapper > .main > .quality');
-        qualityOption.addEventListener('click', () => Utils.setClass(this.settingsWrapper, 'quality open', true));
+        if (this.qualityOptions) {
+            qualityOption.addEventListener('click', () => Utils.setClass(this.settingsWrapper, 'quality open', true));
+        } else {
+            qualityOption.remove();
+        }
 
         if (this.videoPlayer.subtitles) {
             const subtitlesOption = this.videoPlayer.shadowRoot.querySelector('#settings-wrapper > .main > .subtitles');

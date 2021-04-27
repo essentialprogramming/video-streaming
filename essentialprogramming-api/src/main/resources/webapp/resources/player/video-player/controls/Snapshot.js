@@ -10,6 +10,7 @@ export default class Snapshot {
         this.element = this.videoPlayer.shadowRoot.getElementById("snapshot-btn");
         this.element.addEventListener('click', () => {
             const canvas = document.createElement('canvas');
+            this.videoPlayer.videoElement.setAttribute('crossorigin', 'Anonymous');
             canvas.width = this.videoPlayer.videoElement.videoWidth;
             canvas.height = this.videoPlayer.videoElement.videoHeight;
             canvas.getContext('2d').drawImage(this.videoPlayer.videoElement, 0, 0, canvas.width, canvas.height);
