@@ -345,6 +345,11 @@
                         <goals>
                             <goal>npm</goal>
                         </goals>
+                        <configuration>
+                            <!-- optional: if not specified, it will run default
+                            build (and you can remove this whole <configuration> section.) -->
+                            <arguments>install --legacy-peer-deps</arguments>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>webpack build</id>
