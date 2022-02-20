@@ -20,7 +20,7 @@ public class ExceptionHandler {
     private final static Strategy<ValidationException> validationExceptionStrategy = (exception) -> {
         return Response
                 .status(exception.getHttpCode())
-                .header("Content-Range", "bytes */" + exception.getMessage()) // Required in 416.
+                .header("Content-Range", exception.getMessage()) // Required in 416.
                 .build();
     };
 
