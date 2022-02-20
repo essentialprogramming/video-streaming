@@ -1,14 +1,9 @@
 package com.api.validation;
 
-import com.api.service.VideoStreamService;
-import com.util.exceptions.ValidationException;
 import com.util.text.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
-
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -17,7 +12,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import javax.validation.*;
-import javax.ws.rs.core.Response;
 
 /**
  * Validators for the API.
@@ -27,13 +21,8 @@ public class Validators {
 
     private static final Logger logger = LoggerFactory.getLogger(Validators.class);
 
-    private final VideoStreamService videoStreamService;
-    private final Validator validator;
-    @Autowired
-    public Validators(VideoStreamService videoStreamService, Validator validator) {
-        this.videoStreamService = videoStreamService;
-        //validator = Validation.buildDefaultValidatorFactory().getValidator();
-        this.validator = validator;
+    public Validators() {
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
     @Documented
@@ -58,7 +47,7 @@ public class Validators {
      * Range can be null, but if not it has to follow the
      * range pattern.
      */
-    public class RangeValidator implements ConstraintValidator<CheckRange, String> {
+    public static class RangeValidator implements ConstraintValidator<CheckRange, String> {
         private boolean required;
         private String fileName;
 
@@ -69,15 +58,15 @@ public class Validators {
         }
 
         @Override
-        public boolean isValid(final String vin, final ConstraintValidatorContext context) {
-            if (required && StringUtils.isEmpty(vin)) {
+        public boolean isValid(final String range, final ConstraintValidatorContext context) {
+            if (required && StringUtils.isEmpty(range)) {
                 addConstraintViolation(context, "Value for range is required!");
                 return false;
             }
-            if (!required && StringUtils.isEmpty(vin)) {
+            if (!required && StringUtils.isEmpty(range)) {
                 return true;
             }
-            return validateRange(vin, fileName, context);
+            return validateRange(range, fileName, context);
         }
     }
 
@@ -88,10 +77,11 @@ public class Validators {
      * @param range    String
      * @param fileName String
      */
-    private boolean validateRange(final String range, final String fileName, final ConstraintValidatorContext context) {
+    private static boolean validateRange(final String range, final String fileName, final ConstraintValidatorContext context) {
         // Range header should match format "bytes=n-n,n-n,n-n...". If not, then return 416.
         if (!range.matches("^bytes=\\d*-\\d*(,\\d*-\\d*)*$")) {
-            throw new ValidationException("bytes */" + videoStreamService.getFileSize(fileName), Response.Status.REQUESTED_RANGE_NOT_SATISFIABLE);
+            addConstraintViolation(context, "Value for byte range " + range + " is invalid!");
+            return false;
         }
         return true;
     }
@@ -104,4 +94,5 @@ public class Validators {
             context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
         }
     }
+
 }

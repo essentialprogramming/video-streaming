@@ -57,7 +57,7 @@ public class VideoStreamController {
     @Anonymous
     public void streamVideo(@PathParam("fileType") String fileType,
                             @PathParam("fileName") String fileName,
-                            @HeaderParam(value = "Range") String range,
+                            @HeaderParam(value = "Range") @Valid @Validators.CheckRange(required = false) String range,
                             @Suspended AsyncResponse asyncResponse) {
 
         logger.info(range);
@@ -90,11 +90,11 @@ public class VideoStreamController {
     }
 
     private void stream(String fileType, String fileName,
-                        @Valid @Validators.CheckRange(required = false) String byteRange, AsyncContext asyncContext) {
+                        String byteRange, AsyncContext asyncContext) {
 
         //range validation
-        final String fullFileName = fileName + "." + fileType;
-        streamRequestValidationHandler.handle(byteRange, fullFileName);
+        //final String fullFileName = fileName + "." + fileType;
+        //streamRequestValidationHandler.handle(byteRange, fullFileName);
 
         final StreamRequestTranslator streamRequestTranslator = new StreamRequestTranslator(asyncContext, fileName, fileType, byteRange);
         incomingStreamRequestDisruptor.getDisruptor().publishEvent(streamRequestTranslator);

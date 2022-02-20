@@ -2,6 +2,7 @@ package com.api.config;
 
 
 import com.api.controller.*;
+import com.exception.BeanValidationExceptionHandler;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import io.swagger.v3.jaxrs2.integration.resources.AcceptHeaderOpenApiResource;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
@@ -27,6 +28,9 @@ import java.util.Collections;
 public class ApplicationConfig extends ResourceConfig {
 
     public ApplicationConfig() {
+
+        //make sure this is performed before the registration of the Jackson staff
+        register(BeanValidationExceptionHandler.class, 1);
 
         register(CorsFilter.class);
         register(JacksonJaxbJsonProvider.class);
