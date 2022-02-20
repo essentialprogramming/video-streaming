@@ -7,18 +7,16 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/**
- * @author Ovidiu Lapusan
- */
+
 public interface InputResource {
 
 	/**
 	 * Resolve the given resource location to a {@code java.net.URL}.
+	 *
 	 * @return a corresponding URL object
 	 * @throws FileNotFoundException if the resource cannot be resolved to a URL
 	 */
-	static URL getURL(String resourceLocation)
-			throws FileNotFoundException {
+	static URL getURL(String resourceLocation) throws FileNotFoundException {
 		if (resourceLocation == null) {
 			throw new IllegalArgumentException("Resource location must not be null");
 		}
@@ -32,14 +30,12 @@ public interface InputResource {
 			}
 			return url;
 		}
-
 		try {
 			ClassLoader loader = ResourceUtils.getClassLoader();
 			URL url = (loader != null ? loader.getResource(resourceLocation) : ClassLoader.getSystemResource(resourceLocation));
 			if (url != null) {
 				return url;
 			}
-
 			// try URL
 			return new URL(resourceLocation);
 		} catch (MalformedURLException ex) {

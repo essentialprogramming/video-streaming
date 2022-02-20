@@ -3,9 +3,8 @@ package com.config;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.SynchronousQueue;
 
-import static com.util.cloud.DeploymentConfiguration.getProperty;
+import static com.util.cloud.Environment.getProperty;
 
 /**
  * ExecutorsProvider class provides static access to application shared ExecutorServices to be used by asynchronous

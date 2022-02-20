@@ -35,7 +35,7 @@ public class SystemProperty {
 
     private void init() {
         strategiesMap.put(DeploymentStrategy.CLOUD, () -> System.getenv(key));
-        strategiesMap.put(DeploymentStrategy.STANDALONE, () -> System.getProperty(key));
+        strategiesMap.put(DeploymentStrategy.LOCAL, () -> System.getProperty(key));
     }
 
     interface Strategy {

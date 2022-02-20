@@ -35,7 +35,7 @@ import io.undertow.servlet.api.DeploymentManager;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 
-import static com.util.cloud.DeploymentConfiguration.getProperty;
+import static com.util.cloud.Environment.getProperty;
 
 public final class UndertowServer {
 
