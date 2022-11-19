@@ -22,17 +22,28 @@ export default class DashPlayer extends AbstractPlayer {
                                 video: false
                             }
                         },
-                        stableBufferTime: this.bufferSize,
-                        bufferTimeAtTopQuality: this.bufferSize,
-                        longFormContentDurationThreshold: 900,
-                        fastSwitchEnabled: true
+                        buffer: {
+                            fastSwitchEnabled: true,
+                            flushBufferAtTrackSwitch: false,
+                            reuseExistingSourceBuffers: true,
+                            bufferPruningInterval: 10,
+                            bufferToKeep: 20,
+                            bufferTimeAtTopQuality: this.bufferSize,
+                            bufferTimeAtTopQualityLongForm: 60,
+                            initialBufferLevel: NaN,
+                            stableBufferTime: this.bufferSize,
+                            longFormContentDurationThreshold: 600,
+                            stallThreshold: 0.3,
+                            useAppendWindow: true,
+                            setStallState: true
+                        }
                     }
                 })
 
                 Object.defineProperty(DashPlayer, AbstractPlayer.EVENT_TIMEUPDATE, {value: dashjs.MediaPlayer.events.PLAYBACK_TIME_UPDATED});
                 Object.defineProperty(DashPlayer, AbstractPlayer.EVENT_PLAYED, {value: dashjs.MediaPlayer.events.PLAYBACK_PLAYING});
                 Object.defineProperty(DashPlayer, AbstractPlayer.EVENT_PAUSED, {value: dashjs.MediaPlayer.events.PLAYBACK_PAUSED});
-                Object.defineProperty(DashPlayer, AbstractPlayer.EVENT_SEEK, {value: dashjs.MediaPlayer.events.PLAYBACK_SEEK_ASKED});
+                Object.defineProperty(DashPlayer, AbstractPlayer.EVENT_SEEK, {value: dashjs.MediaPlayer.events.PLAYBACK_SEEKED});
                 Object.defineProperty(DashPlayer, AbstractPlayer.EVENT_LOADED_METADATA, {value: dashjs.MediaPlayer.events.PLAYBACK_METADATA_LOADED});
                 //Object.defineProperty(DashPlayer, AbstractPlayer.EVENT_VOLUME_CHANGE, {
                 //    value: {
