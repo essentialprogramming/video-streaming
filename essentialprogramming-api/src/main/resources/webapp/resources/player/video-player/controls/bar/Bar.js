@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit-element';
-import { styleMap } from 'lit-html/directives/style-map';
+import { styleMap } from 'lit/directives/style-map.js';
 import Utils from '../../common/Utils';
 
 import styles from './Bar.scss';

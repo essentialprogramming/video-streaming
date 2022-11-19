@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit-element';
-import { styleMap } from 'lit-html/directives/style-map';
+import { styleMap } from 'lit/directives/style-map.js';
 import styles from './play-overlay.scss';
 
 class PlayOverlay extends LitElement {

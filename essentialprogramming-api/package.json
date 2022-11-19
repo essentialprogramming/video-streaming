@@ -2,8 +2,11 @@
   "name": "html5-video-player",
   "version": "0.0.1",
   "scripts": {
-    "build": "webpack -p",
+    "build": "webpack --mode production",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "browser": {
+    "buffer": false
   },
   "author": "Razvan Prichici",
   "devDependencies": {
@@ -18,17 +21,18 @@
     "extract-loader": "^5.1.0",
     "hasplayer.js": "^1.15.1",
     "lit-html": "^2.2.0",
-    "lit-scss-loader": "^1.0.1",
+    "lit-scss-loader": "^1.1.0",
     "requirejs": "^2.3.6",
     "sass": "^1.32.8",
     "sass-loader": "^10.1.1",
-    "webpack": "^4.19.1",
-    "webpack-cli": "^3.1.1",
-    "webpack-dev-server": "^3.1.8"
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4"
   },
   "dependencies": {
     "@webcomponents/webcomponentsjs": "^2.5.0",
     "lit": "^2.2.0",
-    "lit-element": "^3.2.0"
+    "lit-element": "^3.2.0",
+    "buffer": "^6.0.3"
   }
 }
