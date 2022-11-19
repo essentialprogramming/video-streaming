@@ -6,23 +6,21 @@ import com.api.model.Range;
 import com.api.service.VideoStreamService;
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.EventTranslator;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.AsyncContext;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class AsyncFileReaderHandler implements EventHandler<StreamFragment> {
 
     private final VideoStreamService videoStreamService;
     private final StreamDisruptor streamEventDisruptor;
 
-    @Autowired
-    public AsyncFileReaderHandler(VideoStreamService videoStreamService, StreamDisruptor streamEventDisruptor) {
-        this.videoStreamService = videoStreamService;
-        this.streamEventDisruptor = streamEventDisruptor;
-    }
 
     @Override
     public void onEvent(StreamFragment streamEvent, long sequence, boolean endOfBatch) throws Exception {
@@ -47,6 +45,7 @@ public class AsyncFileReaderHandler implements EventHandler<StreamFragment> {
             videoFragment.setRange(range);
 
         };
+
         streamEventDisruptor.getDisruptor().publishEvent(eventTranslator);
     }
 }

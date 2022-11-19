@@ -9,6 +9,7 @@ import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.lmax.disruptor.util.DaemonThreadFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -21,7 +22,7 @@ public class IncomingStreamRequestDisruptor {
     private final OpenConnectionsCounter fileReadersCounter;
 
     @Autowired
-    public IncomingStreamRequestDisruptor(StreamFragmentFactory streamEventFactory, AsyncFileReaderHandler asyncFileReaderHandler, OpenConnectionsCounter fileReadersCounter ) {
+    public IncomingStreamRequestDisruptor(StreamFragmentFactory streamEventFactory, @Lazy AsyncFileReaderHandler asyncFileReaderHandler, OpenConnectionsCounter fileReadersCounter ) {
         this.streamEventFactory = streamEventFactory;
         this.asyncFileReaderHandler = asyncFileReaderHandler;
         this.fileReadersCounter = fileReadersCounter;

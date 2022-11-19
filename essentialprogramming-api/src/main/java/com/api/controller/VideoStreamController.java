@@ -10,11 +10,11 @@ import com.exception.ExceptionHandler;
 import com.util.async.Computation;
 import com.util.enums.Language;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 
+import javax.inject.Inject;
 import javax.servlet.AsyncContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,24 +31,22 @@ import java.util.concurrent.ExecutorService;
 import static com.api.constants.ApplicationConstants.*;
 
 @Path("/video/")
+@Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class VideoStreamController {
 
-    private static final Logger logger = LoggerFactory.getLogger(VideoStreamController.class);
     private final StreamRequestValidationHandler streamRequestValidationHandler;
     private final IncomingStreamRequestDisruptor incomingStreamRequestDisruptor;
 
     @Context
     private Language language;
+
     @Context
     private HttpServletRequest request;
+
     @Context
     private HttpServletResponse response;
 
-    @Autowired
-    public VideoStreamController(StreamRequestValidationHandler streamRequestValidationHandler, IncomingStreamRequestDisruptor incomingStreamRequestDisruptor) {
-        this.streamRequestValidationHandler = streamRequestValidationHandler;
-        this.incomingStreamRequestDisruptor = incomingStreamRequestDisruptor;
-    }
 
     @GET
     @Path("stream/{fileType}/{fileName}")
@@ -60,7 +58,7 @@ public class VideoStreamController {
                             @HeaderParam(value = "Range") /*@Valid @Validators.CheckRange(required = false)*/ String range,
                             @Suspended AsyncResponse asyncResponse) {
 
-        logger.info(range);
+        log.info(range);
 
         assert request.isAsyncStarted();
         final AsyncContext asyncContext = request.getAsyncContext();
@@ -98,6 +96,7 @@ public class VideoStreamController {
 
         final StreamRequestTranslator streamRequestTranslator = new StreamRequestTranslator(asyncContext, fileName, fileType, byteRange);
         incomingStreamRequestDisruptor.getDisruptor().publishEvent(streamRequestTranslator);
+        log.info("RingBuffer remaining capacity: " + incomingStreamRequestDisruptor.getDisruptor().getRingBuffer().remainingCapacity());
 
     }
 }
