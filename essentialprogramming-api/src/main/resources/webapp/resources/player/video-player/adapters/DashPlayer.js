@@ -17,6 +17,12 @@ export default class DashPlayer extends AbstractPlayer {
                 this.player.initialize(this.videoElement, url, this.options.autoplay);
                 this.player.updateSettings({
                     streaming: {
+                        gaps: {
+                            jumpGaps: true,
+                            jumpLargeGaps: true,
+                            smallGapLimit: 1.5,
+                            threshold: 0.3
+                        },
                         abr: {
                             autoSwitchBitrate: {
                                 video: false
