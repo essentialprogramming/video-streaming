@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML5 Video Player</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/html5player.css">
+
+</head>
+<body>
+<div class="container">
+    <h1 class="text-muted">HTML5 Video Player</h1>
+    <h3 class="text-muted" id="videoUrl"></h3>
+
+    <div class="row">
+        <video-player
+                bufferSize="20"
+                src="/api/video/stream/mp4/wildanimals"
+                subtitles="subtitles.vtt"
+        >
+            <play-overlay
+                    alt="true"
+                    slot="play-overlay"
+                    primaryText="Watch this fantastic documentary"
+                    primaryColor="#FFF"
+                    secondaryText=" Razvan Prichici "
+                    secondaryColor="#E30E0E"
+                    buttonBackground="#E30E0E"
+                    buttonColor="#FFF"
+                    buttonText="Watch">
+            </play-overlay>
+        </video-player>
+    </div>
+
+</div>
+<script src="vendor/requirejs/require.js"></script>
+<script src="js/html5player.js"></script>
+</body>
+</html>
