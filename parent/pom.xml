@@ -11,7 +11,7 @@
     <properties>
 	    <build.number>SNAPSHOT</build.number>
 	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java-version>1.8</java-version>
+        <java-version>18</java-version>
         <io.undertow.version>2.2.17.Final</io.undertow.version>
         <org.glassfish.jersey.version>2.35</org.glassfish.jersey.version>
         <org.jboss.weld.version>3.1.9.Final</org.jboss.weld.version>

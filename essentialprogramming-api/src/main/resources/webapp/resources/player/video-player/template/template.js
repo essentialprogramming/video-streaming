@@ -1,4 +1,4 @@
-import { html } from 'lit-element';
+import { html } from 'lit';
 import { getControlsTemplate } from '../controls/template/controls';
 
 export default function getPlayerTemplate(videoPlayer) {

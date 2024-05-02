@@ -1,4 +1,4 @@
-import { html } from 'lit-element';
+import { html } from 'lit';
 import { getSettingsTemplate } from './settings/settings';
 import { Bar } from '../bar/Bar';
 

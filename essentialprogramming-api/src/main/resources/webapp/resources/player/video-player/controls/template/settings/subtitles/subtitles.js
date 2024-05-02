@@ -1,4 +1,4 @@
-import { html } from 'lit-element';
+import { html } from 'lit';
 import subtitlesMainOptions from './main-options';
 import subtitlesStyleOptions from './style/style';
 

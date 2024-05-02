@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
 import styles from './play-overlay.scss';
 

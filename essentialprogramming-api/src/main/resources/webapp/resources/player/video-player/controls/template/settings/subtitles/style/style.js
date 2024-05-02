@@ -1,4 +1,4 @@
-import { html } from 'lit-element';
+import { html } from 'lit';
 import fontSizeOptions from './font-size';
 import colorOptions from './color';
 

@@ -1,4 +1,4 @@
-import { LitElement } from 'lit-element';
+import { LitElement } from 'lit';
 import getPlayerTemplate from './video-player/template/template';
 import Controls from './video-player/controls/Controls';
 import PopUpController from './video-player/common/PopUp';

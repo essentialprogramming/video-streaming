@@ -1,4 +1,4 @@
-import { html } from 'lit-element';
+import { html } from 'lit';
 import { renderOption } from './settings';
 import Utils from '../../../common/Utils';
 import Collections from "../../../common/Collections";

@@ -1,4 +1,4 @@
-import { html } from 'lit-element';
+import { html } from 'lit';
 import { renderQualityOptions } from './quality';
 import { renderSpeedOptions } from './speed';
 import subtitlesOptions from './subtitles/subtitles';
